@@ -1,15 +1,16 @@
-import { useState } from "react";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./Pages/Register/Register";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route>
+          <Route path="/register" element={<Register />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
