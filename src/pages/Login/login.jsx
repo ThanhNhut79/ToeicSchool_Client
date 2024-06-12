@@ -46,6 +46,10 @@ const Login = ({ onLogin }) => {
                 />
                 <label>Mật khẩu</label>
               </div>
+              <div className="admin-check">
+                <input type="checkbox" />
+                <label>Giành cho giảng viên</label>
+              </div>
               <button onClick={handleLogin} className="btn-login">
                 Xác nhận
               </button>
@@ -57,7 +61,7 @@ const Login = ({ onLogin }) => {
               <div className="login-register">
                 <p>Bạn chưa có tài khoản? </p>
                 <a className="register-link">
-                  {/* <Link to="/register">Register</Link> */}
+                  <Link to="/register">Đăng ký ngay</Link>
                 </a>
               </div>
             </div>
