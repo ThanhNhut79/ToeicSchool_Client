@@ -9,19 +9,15 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
-    // try {
-    //   const res = await axios.post(
-    //     URL + "/api/auth/login",
-    //     { email, password },
-    //     { withCredentials: true }
-    //   );
-    //   // console.log(res.data)
-    //   setUser(res.data);
-    //   navigate("/");
-    // } catch (err) {
-    //   setError(true);
-    //   console.log(err);
-    // }
+    if (username === "admin" && password === "admin") {
+      onLogin("admin");
+    } else if (username === "teacher" && password === "teacher") {
+      onLogin("teacher");
+    } else if (username === "student" && password === "student") {
+      onLogin("student");
+    } else {
+      alert("Đăng nhập không thành công");
+    }
   };
   return (
     <>
@@ -35,8 +31,9 @@ const Login = () => {
                   <ion-icon name="mail"></ion-icon>
                 </span>
                 <input
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  type="email"
+                  type="text"
                 />
                 <label>Email</label>
               </div>
@@ -45,6 +42,7 @@ const Login = () => {
                   <ion-icon name="lock-closed"></ion-icon>
                 </span>
                 <input
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                 />
