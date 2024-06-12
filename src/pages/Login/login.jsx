@@ -3,20 +3,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./login.css";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
-    if (username === "admin" && password === "admin") {
-      onLogin("admin");
-    } else if (username === "teacher" && password === "teacher") {
-      onLogin("teacher");
-    } else if (username === "student" && password === "student") {
-      onLogin("student");
-    } else {
-      alert("Đăng nhập không thành công");
+    if (username === "admins" && password === "admins") {
+      onLogin("Admin");
+    } else if (username === "giangviens" && password === "giangviens") {
+      onLogin("Giangvien");
+    } else if (username === "users" && password === "users") {
+      onLogin("nguoidung");
     }
   };
   return (
