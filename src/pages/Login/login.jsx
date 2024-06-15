@@ -3,20 +3,36 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./login.css";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    if (username === "admins" && password === "admins") {
-      onLogin("Admin");
-    } else if (username === "giangviens" && password === "giangviens") {
-      onLogin("Giangvien");
-    } else if (username === "users" && password === "users") {
-      onLogin("nguoidung");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        email,
+        password,
+      });
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+
+        if (response.data.role === "Admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/user");
+        }
+      }
+    } catch (err) {
+      setError("Invalid credentials");
     }
   };
+
   return (
     <>
       <div className="login-page">
@@ -28,11 +44,7 @@ const Login = ({ onLogin }) => {
                 <span className="icon">
                   <ion-icon name="mail"></ion-icon>
                 </span>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="text"
-                />
+                <input onChange={(e) => setEmail(e.target.value)} type="text" />
                 <label>Email</label>
               </div>
               <div className="input-box">
@@ -40,7 +52,6 @@ const Login = ({ onLogin }) => {
                   <ion-icon name="lock-closed"></ion-icon>
                 </span>
                 <input
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                 />
