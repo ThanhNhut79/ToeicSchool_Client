@@ -16,16 +16,16 @@ const Login = () => {
     try {
       let endpoint = isAdmin
         ? "http://localhost:5000/quanly/login"
-        : "http://localhost:5000/user/login";
+        : "http://localhost:5000/users/login";
 
       const response = await axios.post(endpoint, {
         Email: email,
         MatKhau: password,
       });
 
-      if (response.success === true) {
+      if (response.data.success === true) {
         if (isAdmin) {
-          const { role } = response;
+          const { role } = response.data;
           switch (role) {
             case "Admin":
               navigate("/admin-dashboard");
