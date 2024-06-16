@@ -1,35 +1,36 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/login", {
-        email,
-        password,
+      const response = await axios.post("http://localhost:5000/users/login", {
+        Email: email,
+        MatKhau: password,
+        role: isAdmin,
       });
 
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("role", response.data.role);
+      const { role } = response.data;
 
-        if (response.data.role === "Admin") {
-          navigate("/dashboard");
-        } else {
-          navigate("/user");
-        }
+      if (role === "Admin") {
+        navigate.push("/admin-dashboard");
+      } else if (role === "GiangVien") {
+        navigate.push("/instructor-dashboard");
+      } else if (role === "nguoidung") {
+        navigate.push("/user-dashboard");
+      } else {
+        setError(true);
       }
     } catch (err) {
-      setError("Invalid credentials");
+      setError(true);
     }
   };
 
@@ -58,7 +59,11 @@ const Login = () => {
                 <label>Mật khẩu</label>
               </div>
               <div className="admin-check">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={isAdmin}
+                  onChange={(e) => setIsAdmin(e.target.checked)}
+                />
                 <label>Giành cho giảng viên</label>
               </div>
               <button onClick={handleLogin} className="btn-login">
