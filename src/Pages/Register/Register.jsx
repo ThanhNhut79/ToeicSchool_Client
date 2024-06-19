@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
+    HoTen: "",
+    Email: "",
+    MatKhau: "",
+    XacNhanMatKhau: "",
+    SoDienThoai: "",
+    TenTaiKhoan: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -25,30 +27,34 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username.trim()) {
-      newErrors.username = "Tên người dùng là bắt buộc";
+    if (!formData.HoTen.trim()) {
+      newErrors.HoTen = "Họ và tên là bắt buộc";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email là bắt buộc";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+    if (!formData.Email.trim()) {
+      newErrors.Email = "Email là bắt buộc";
+    } else if (!/\S+@\S+\.\S+/.test(formData.Email)) {
+      newErrors.Email = "Email không hợp lệ";
     }
 
-    if (!formData.password.trim()) {
-      newErrors.password = "Mật khẩu là bắt buộc";
+    if (!formData.MatKhau.trim()) {
+      newErrors.MatKhau = "Mật khẩu là bắt buộc";
     }
 
-    if (!formData.confirmPassword.trim()) {
-      newErrors.confirmPassword = "Xác nhận mật khẩu là bắt buộc";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu và Xác nhận mật khẩu không khớp";
+    if (!formData.XacNhanMatKhau.trim()) {
+      newErrors.XacNhanMatKhau = "Xác nhận mật khẩu là bắt buộc";
+    } else if (formData.MatKhau !== formData.XacNhanMatKhau) {
+      newErrors.XacNhanMatKhau = "Mật khẩu và Xác nhận mật khẩu không khớp";
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Số điện thoại là bắt buộc";
-    } else if (!/^\d{10,11}$/.test(formData.phone)) {
-      newErrors.phone = "Số điện thoại không hợp lệ";
+    if (!formData.SoDienThoai.trim()) {
+      newErrors.SoDienThoai = "Số điện thoại là bắt buộc";
+    } else if (!/^\d{9,11}$/.test(formData.SoDienThoai)) {
+      newErrors.SoDienThoai = "Số điện thoại không hợp lệ";
+    }
+
+    if (!formData.TenTaiKhoan.trim()) {
+      newErrors.TenTaiKhoan = "Tên tài khoản là bắt buộc";
     }
 
     setErrors(newErrors);
@@ -56,77 +62,114 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form data:", formData);
-      // Thực hiện các thao tác cần thiết để xử lý đăng ký
-      alert("Đăng ký thành công!");
-      navigate("/login");
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/users/register",
+          {
+            HoTen: formData.HoTen,
+            Email: formData.Email,
+            MatKhau: formData.MatKhau,
+            SoDienThoai: formData.SoDienThoai,
+            TenTaiKhoan: formData.TenTaiKhoan,
+          }
+        );
+        console.log("User registered:", response.data);
+        alert("Đăng ký thành công!");
+        navigate("/login");
+      } catch (error) {
+        console.error("Failed to register:", error);
+        alert("Đăng ký thất bại. Vui lòng thử lại sau.");
+      }
     }
   };
   return (
     <form className="registration-form" onSubmit={handleSubmit}>
       <h2>Register</h2>
       <div className="form-group">
-        <label htmlFor="username">User Name: </label>
+        <label htmlFor="HoTen">Họ và tên: </label>
         <input
           type="text"
-          id="username"
-          name="username"
-          value={formData.username}
+          id="HoTen"
+          name="HoTen"
+          value={formData.HoTen}
           onChange={handleChange}
           required
         />
+        {errors.HoTen && <p className="error-message">{errors.HoTen}</p>}
       </div>
       <div className="form-group">
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="Email">Email:</label>
         <input
           type="email"
-          id="email"
-          name="email"
-          value={formData.email}
+          id="Email"
+          name="Email"
+          value={formData.Email}
           onChange={handleChange}
           required
         />
+        {errors.Email && <p className="error-message">{errors.Email}</p>}
       </div>
       <div className="form-group">
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="MatKhau">Mật khẩu:</label>
         <input
           type="password"
-          id="password"
-          name="password"
-          value={formData.password}
+          id="MatKhau"
+          name="MatKhau"
+          value={formData.MatKhau}
           onChange={handleChange}
           required
         />
+        {errors.MatKhau && <p className="error-message">{errors.MatKhau}</p>}
       </div>
       <div className="form-group">
-        <label htmlFor="confirmPassword">Confirm password:</label>
+        <label htmlFor="XacNhanMatKhau">Xác nhận mật khẩu:</label>
         <input
           type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          value={formData.confirmPassword}
+          id="XacNhanMatKhau"
+          name="XacNhanMatKhau"
+          value={formData.XacNhanMatKhau}
           onChange={handleChange}
           required
         />
+        {errors.XacNhanMatKhau && (
+          <p className="error-message">{errors.XacNhanMatKhau}</p>
+        )}
       </div>
       <div className="form-group">
-        <label htmlFor="phone">Phone:</label>
+        <label htmlFor="SoDienThoai">Số điện thoại:</label>
         <input
           type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
+          id="SoDienThoai"
+          name="SoDienThoai"
+          value={formData.SoDienThoai}
           onChange={handleChange}
           required
         />
+        {errors.SoDienThoai && (
+          <p className="error-message">{errors.SoDienThoai}</p>
+        )}
+      </div>
+      <div className="form-group">
+        <label htmlFor="TenTaiKhoan">Tên tài khoản:</label>
+        <input
+          type="text"
+          id="TenTaiKhoan"
+          name="TenTaiKhoan"
+          value={formData.TenTaiKhoan}
+          onChange={handleChange}
+          required
+        />
+        {errors.TenTaiKhoan && (
+          <p className="error-message">{errors.TenTaiKhoan}</p>
+        )}
       </div>
       <button type="submit">Đăng Ký</button>
       <div className="form-links">
         <a href="/login" className="form-link">
-          Login now ?
+          Đăng nhập ngay?
         </a>
       </div>
     </form>

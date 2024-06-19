@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { Badge } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { CartContext } from "../../Context/CartContext";
 
 function Header() {
+  const { cartItems } = useContext(CartContext);
+
   return (
     <div className="header">
       <nav className="navbar">
@@ -48,6 +53,15 @@ function Header() {
           </Link>
           <Link className="auth-button" to="/login">
             <span>Đăng nhập</span>
+          </Link>
+        </div>
+        <div className="cart-icon">
+          <Link to="/cart">
+            <Badge count={cartItems.length}>
+              <ShoppingCartOutlined
+                style={{ fontSize: "24px", color: "#fff" }}
+              />
+            </Badge>
           </Link>
         </div>
       </nav>

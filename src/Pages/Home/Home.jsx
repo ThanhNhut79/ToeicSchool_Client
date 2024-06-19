@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.css";
+import Course from "../Course/Course";
 
 const Home = () => {
   return (
@@ -11,7 +12,7 @@ const Home = () => {
         />
       </div>
       <div>
-        <h2>Các khóa học</h2>
+        <Course />
       </div>
     </div>
   );
