@@ -9,26 +9,32 @@ import Dashboard from "./Pages/Dashboard/DashboardCourse";
 import Course from "./Pages/Course/Course";
 import Cart from "./Pages/Cart/Cart";
 import { CartProvider } from "./Context/CartContext";
+import Login from "./Pages/Login/Login";
+import Userprofile from "./Pages/Userprofile/Userprofile";
+import { AuthProvider } from "./Context/AuthContext";
 
 function App() {
   return (
     <Router>
-      <CartProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+      <AuthProvider>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
 
-            <Route path="/introduce" element={<Introduce />} />
-            <Route path="/course" element={<Course />} />
-            <Route path="/cart" element={<Cart />} />
-          </Route>
+              <Route path="/introduce" element={<Introduce />} />
+              <Route path="/course" element={<Course />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
 
-          <Route>
-            <Route path="/register" element={<Register />} />
-            <Route path="/Dashboard-Courses" element={<Dashboard />} />
-          </Route>
-        </Routes>
-      </CartProvider>
+            <Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/Dashboard-Courses" element={<Dashboard />} />
+            </Route>
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
     </Router>
   );
 }

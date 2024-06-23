@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { Badge } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { CartContext } from "../../Context/CartContext";
+import { AuthContext } from "../../Context/AuthContext";
 
 function Header() {
   const { cartItems } = useContext(CartContext);
+  const { loggedInUser } = useContext(AuthContext);
 
   return (
     <div className="header">
@@ -48,12 +50,25 @@ function Header() {
           </ul>
         </div>
         <div className="auth-buttons">
-          <Link className="auth-button" to="/register">
-            <span>Đăng ký</span>
-          </Link>
-          <Link className="auth-button" to="/login">
-            <span>Đăng nhập</span>
-          </Link>
+          {loggedInUser ? (
+            <>
+              <Link className="auth-button" to="/userprofile">
+                <span>Xin chào, {loggedInUser.HoTen}</span>
+              </Link>
+              <Link className="auth-button" to="/logout">
+                <span>Đăng xuất</span>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link className="auth-button" to="/register">
+                <span>Đăng ký</span>
+              </Link>
+              <Link className="auth-button" to="/login">
+                <span>Đăng nhập</span>
+              </Link>
+            </>
+          )}
         </div>
         <div className="cart-icon">
           <Link to="/cart">
