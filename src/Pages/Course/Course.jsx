@@ -53,7 +53,7 @@ const Course = () => {
             <Card
               className="course-card"
               hoverable
-              cover={<img alt="example" src={course.image} />}
+              cover={<img alt="example" src={course.HinhAnh} />}
               onClick={() => showModal(course)}
             >
               <Meta
@@ -82,7 +82,7 @@ const Course = () => {
       >
         {selectedCourse && (
           <div>
-            <img src={selectedCourse.image} alt={selectedCourse.TenKhoaHoc} />
+            <img src={selectedCourse.HinhAnh} alt={selectedCourse.TenKhoaHoc} />
             <p>
               <strong>Mô tả:</strong> {selectedCourse.MoTa}
             </p>

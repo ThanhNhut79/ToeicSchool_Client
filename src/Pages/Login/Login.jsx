@@ -30,7 +30,7 @@ const Login = () => {
           const { role } = response.data;
           switch (role) {
             case "Admin":
-              navigate("/admin-dashboard");
+              navigate("/dashboard-courses");
               break;
             case "GiangVien":
               navigate("/GiangVien-dashboard");

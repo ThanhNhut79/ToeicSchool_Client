@@ -56,7 +56,6 @@ const Register = () => {
     if (!formData.TenTaiKhoan.trim()) {
       newErrors.TenTaiKhoan = "Tên tài khoản là bắt buộc";
     }
-
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -85,6 +84,7 @@ const Register = () => {
       }
     }
   };
+
   return (
     <form className="registration-form" onSubmit={handleSubmit}>
       <h2>Register</h2>
@@ -166,6 +166,7 @@ const Register = () => {
           <p className="error-message">{errors.TenTaiKhoan}</p>
         )}
       </div>
+
       <button type="submit">Đăng Ký</button>
       <div className="form-links">
         <a href="/login" className="form-link">
