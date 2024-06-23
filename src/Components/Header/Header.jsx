@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { CartContext } from "../../Context/CartContext";
@@ -9,6 +9,12 @@ import { AuthContext } from "../../Context/AuthContext";
 function Header() {
   const { cartItems } = useContext(CartContext);
   const { loggedInUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate.push("/");
+  };
 
   return (
     <div className="header">
@@ -52,10 +58,10 @@ function Header() {
         <div className="auth-buttons">
           {loggedInUser ? (
             <>
-              <Link className="auth-button" to="/userprofile">
+              <div className="auth-button-login" to="/userprofile">
                 <span>Xin chào, {loggedInUser.HoTen}</span>
-              </Link>
-              <Link className="auth-button" to="/logout">
+              </div>
+              <Link className="auth-button-login" onClick={handleLogout}>
                 <span>Đăng xuất</span>
               </Link>
             </>

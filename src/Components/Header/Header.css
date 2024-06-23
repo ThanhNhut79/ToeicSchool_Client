@@ -51,6 +51,9 @@
   transition: background-color 0.3s;
   background-color: white; /* Màu xám nhạt */
 }
+.auth-button-login {
+  color: #fff;
+}
 
 .auth-button:hover {
   background-color: rgb(238, 129, 129);

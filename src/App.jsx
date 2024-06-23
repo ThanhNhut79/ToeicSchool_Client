@@ -10,7 +10,6 @@ import Course from "./Pages/Course/Course";
 import Cart from "./Pages/Cart/Cart";
 import { CartProvider } from "./Context/CartContext";
 import Login from "./Pages/Login/Login";
-import Userprofile from "./Pages/Userprofile/Userprofile";
 import { AuthProvider } from "./Context/AuthContext";
 
 function App() {
