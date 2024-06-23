@@ -9,6 +9,7 @@ import Dashboard from "./Pages/Dashboard/DashboardCourse";
 import Course from "./Pages/Course/Course";
 import Cart from "./Pages/Cart/Cart";
 import { CartProvider } from "./Context/CartContext";
+import Login from "./Pages/Login/Login";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           </Route>
 
           <Route>
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/Dashboard-Courses" element={<Dashboard />} />
           </Route>
