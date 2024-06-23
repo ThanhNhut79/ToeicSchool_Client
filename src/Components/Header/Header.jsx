@@ -52,10 +52,10 @@ function Header() {
         <div className="auth-buttons">
           {loggedInUser ? (
             <>
-              <Link className="auth-button" to="/userprofile">
+              <div className="auth-button-login" to="/userprofile">
                 <span>Xin chào, {loggedInUser.HoTen}</span>
-              </Link>
-              <Link className="auth-button" to="/logout">
+              </div>
+              <Link className="auth-button-login" to="/logout">
                 <span>Đăng xuất</span>
               </Link>
             </>
