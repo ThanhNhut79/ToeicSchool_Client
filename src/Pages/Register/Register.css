@@ -1,55 +1,81 @@
+.register-page {
+  background: url("/src/images/login_background.jpg") no-repeat;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+.register-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .registration-form {
-  max-width: 500px;
-  margin: 100px auto;
+  width: 500px;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(7px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .registration-form h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
 }
 
 .form-group {
   margin-bottom: 15px;
+  border-bottom: 2px solid #162938;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color: #333;
+  color: #fff;
 }
 
 .form-group input {
   width: calc(100% - 20px);
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 600;
 }
 
 button {
   width: 100%;
-  padding: 10px;
+  height: 45px;
+  background: #eb824a;
   border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
+  outline: none;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.5s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: #162938;
+  color: #fff;
 }
 .form-link {
-  color: #1e90ff;
-  font-size: 14px;
+  color: #aae40d;
   text-decoration: none;
+  font-weight: 600;
+  transition: 0.5s;
   display: flex;
   justify-content: center;
   padding-top: 10px;

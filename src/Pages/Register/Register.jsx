@@ -86,93 +86,99 @@ const Register = () => {
     }
   };
   return (
-    <form className="registration-form" onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <div className="form-group">
-        <label htmlFor="HoTen">Họ và tên: </label>
-        <input
-          type="text"
-          id="HoTen"
-          name="HoTen"
-          value={formData.HoTen}
-          onChange={handleChange}
-          required
-        />
-        {errors.HoTen && <p className="error-message">{errors.HoTen}</p>}
+    <div className="register-page">
+      <div className="register-box">
+        <form className="registration-form" onSubmit={handleSubmit}>
+          <h2>Đăng ký</h2>
+          <div className="form-group">
+            <label htmlFor="HoTen">Họ và tên: </label>
+            <input
+              type="text"
+              id="HoTen"
+              name="HoTen"
+              value={formData.HoTen}
+              onChange={handleChange}
+              required
+            />
+            {errors.HoTen && <p className="error-message">{errors.HoTen}</p>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="Email">Email:</label>
+            <input
+              type="email"
+              id="Email"
+              name="Email"
+              value={formData.Email}
+              onChange={handleChange}
+              required
+            />
+            {errors.Email && <p className="error-message">{errors.Email}</p>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="MatKhau">Mật khẩu:</label>
+            <input
+              type="password"
+              id="MatKhau"
+              name="MatKhau"
+              value={formData.MatKhau}
+              onChange={handleChange}
+              required
+            />
+            {errors.MatKhau && (
+              <p className="error-message">{errors.MatKhau}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="XacNhanMatKhau">Xác nhận mật khẩu:</label>
+            <input
+              type="password"
+              id="XacNhanMatKhau"
+              name="XacNhanMatKhau"
+              value={formData.XacNhanMatKhau}
+              onChange={handleChange}
+              required
+            />
+            {errors.XacNhanMatKhau && (
+              <p className="error-message">{errors.XacNhanMatKhau}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="SoDienThoai">Số điện thoại:</label>
+            <input
+              type="tel"
+              id="SoDienThoai"
+              name="SoDienThoai"
+              value={formData.SoDienThoai}
+              onChange={handleChange}
+              required
+            />
+            {errors.SoDienThoai && (
+              <p className="error-message">{errors.SoDienThoai}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="TenTaiKhoan">Tên tài khoản:</label>
+            <input
+              type="text"
+              id="TenTaiKhoan"
+              name="TenTaiKhoan"
+              value={formData.TenTaiKhoan}
+              onChange={handleChange}
+              required
+            />
+            {errors.TenTaiKhoan && (
+              <p className="error-message">{errors.TenTaiKhoan}</p>
+            )}
+          </div>
+          <button type="submit">Đăng Ký</button>
+          <div className="form-links">
+            <a href="/login" className="form-link">
+              Đăng nhập ngay?
+            </a>
+          </div>
+        </form>
       </div>
-      <div className="form-group">
-        <label htmlFor="Email">Email:</label>
-        <input
-          type="email"
-          id="Email"
-          name="Email"
-          value={formData.Email}
-          onChange={handleChange}
-          required
-        />
-        {errors.Email && <p className="error-message">{errors.Email}</p>}
-      </div>
-      <div className="form-group">
-        <label htmlFor="MatKhau">Mật khẩu:</label>
-        <input
-          type="password"
-          id="MatKhau"
-          name="MatKhau"
-          value={formData.MatKhau}
-          onChange={handleChange}
-          required
-        />
-        {errors.MatKhau && <p className="error-message">{errors.MatKhau}</p>}
-      </div>
-      <div className="form-group">
-        <label htmlFor="XacNhanMatKhau">Xác nhận mật khẩu:</label>
-        <input
-          type="password"
-          id="XacNhanMatKhau"
-          name="XacNhanMatKhau"
-          value={formData.XacNhanMatKhau}
-          onChange={handleChange}
-          required
-        />
-        {errors.XacNhanMatKhau && (
-          <p className="error-message">{errors.XacNhanMatKhau}</p>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="SoDienThoai">Số điện thoại:</label>
-        <input
-          type="tel"
-          id="SoDienThoai"
-          name="SoDienThoai"
-          value={formData.SoDienThoai}
-          onChange={handleChange}
-          required
-        />
-        {errors.SoDienThoai && (
-          <p className="error-message">{errors.SoDienThoai}</p>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="TenTaiKhoan">Tên tài khoản:</label>
-        <input
-          type="text"
-          id="TenTaiKhoan"
-          name="TenTaiKhoan"
-          value={formData.TenTaiKhoan}
-          onChange={handleChange}
-          required
-        />
-        {errors.TenTaiKhoan && (
-          <p className="error-message">{errors.TenTaiKhoan}</p>
-        )}
-      </div>
-      <button type="submit">Đăng Ký</button>
-      <div className="form-links">
-        <a href="/login" className="form-link">
-          Đăng nhập ngay?
-        </a>
-      </div>
-    </form>
+    </div>
   );
 };
 
