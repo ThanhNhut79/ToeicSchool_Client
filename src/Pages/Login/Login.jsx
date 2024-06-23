@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const { setLoggedInUser } = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {
@@ -23,6 +25,7 @@ const Login = () => {
       });
 
       if (response.data.success === true) {
+        setLoggedInUser(response.data.user);
         if (isAdmin) {
           const { role } = response.data;
           switch (role) {
@@ -37,7 +40,7 @@ const Login = () => {
               break;
           }
         } else {
-          navigate("/user-dashboard");
+          navigate("/");
         }
       } else {
         setError(true);
