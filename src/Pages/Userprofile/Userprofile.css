@@ -1,4 +1,17 @@
-.user-details,
-.user-courses {
-  margin: 20px;
+.user-detail {
+  position: relative;
+  padding: 100px;
+}
+.detail-box {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.detail-box h2 {
+  background-color: #e7e7e9;
+  border-radius: 5px;
+  padding: 5px;
+}
+.content-detail {
 }

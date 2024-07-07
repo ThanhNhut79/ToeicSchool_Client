@@ -44,13 +44,23 @@ const Userprofile = () => {
   }
 
   return (
-    <div className="user-info">
-      <h2>Thông tin chi tiết người dùng</h2>
-      <p>Mã người dùng: {user.MaNguoiDung}</p>
-      <p>Họ tên: {user.HoTen}</p>
-      <p>Email: {user.Email}</p>
-      <p>Số điện thoại: {user.SoDienThoai}</p>
-      <p>Tên tài khoản: {user.TenTaiKhoan}</p>
+    <div className="user-detail">
+      <div className="detail-box">
+        <h2>Thông tin học viên</h2>
+        <div className="content-detail">
+          <p>Mã học viên: {user.MaNguoiDung}</p>
+          <p>Họ tên: {user.HoTen}</p>
+          <p>Email: {user.Email}</p>
+          <p>Số điện thoại: {user.SoDienThoai}</p>
+          <p>Tên tài khoản: {user.TenTaiKhoan}</p>
+        </div>
+      </div>
+      <div className="detail-box">
+        <div className="">
+          <h2>Khóa học đã đăng ký</h2>
+          <p>.........</p>
+        </div>
+      </div>
     </div>
   );
 };

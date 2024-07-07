@@ -21,7 +21,7 @@
 .admin-info {
   display: flex;
   align-items: center;
-  width: 23%;
+  width: auto;
 }
 
 .admin-info span {

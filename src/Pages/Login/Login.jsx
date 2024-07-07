@@ -25,12 +25,12 @@ const Login = () => {
       });
 
       if (response.data.success) {
-        setLoggedInUser(response.data.quanly); // Lưu thông tin người dùng vào context
         if (isAdmin) {
+          setLoggedInUser(response.data.quanly); // Lưu thông tin người dùng vào context
           const { role } = response.data;
           switch (role) {
             case "Admin":
-              navigate("/dashboard");
+              navigate("/dashboard/courses");
               break;
             case "GiangVien":
               navigate("/GiangVien-dashboard");
@@ -40,6 +40,7 @@ const Login = () => {
               break;
           }
         } else {
+          setLoggedInUser(response.data.user); // Lưu thông tin người dùng vào conttex
           navigate("/");
         }
       } else {

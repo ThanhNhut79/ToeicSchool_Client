@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Dropdown, Space, Avatar } from "antd";
 import {
   UserOutlined,
   BookOutlined,
   VideoCameraOutlined,
   EnvironmentOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -26,16 +27,34 @@ const Dashboard = () => {
       navigate("/login");
     });
   };
+  const items = [
+    {
+      key: "1",
+      label: <span>{loggedInUser && `${loggedInUser.HoTen}`}</span>,
+    },
+    {
+      key: "2",
+      danger: true,
+      label: (
+        <span onClick={handleLogout} type="primary">
+          Logout
+        </span>
+      ),
+    },
+  ];
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Header className="header3">
         <div className="logo3">ToeicSchool</div>
         <div className="admin-info">
-          <span>Welcome{loggedInUser && `, ${loggedInUser.HoTen}`}</span>
-
-          <Button onClick={handleLogout} type="primary">
-            Logout
-          </Button>
+          <Dropdown menu={{ items }}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Avatar
+                style={{ backgroundColor: "#87d068" }}
+                icon={<UserOutlined />}
+              />
+            </a>
+          </Dropdown>
         </div>
       </Header>
       <Layout>
@@ -44,7 +63,11 @@ const Dashboard = () => {
           className="site-layout-background"
           style={{ position: "fixed", height: "100vh", left: 0 }}
         >
-          <Menu mode="inline" style={{ height: "100%", borderRight: 0 }}>
+          <Menu
+            mode="inline"
+            style={{ height: "100%", borderRight: 0 }}
+            defaultSelectedKeys={["1"]}
+          >
             <Menu.Item key="1" icon={<BookOutlined />}>
               <Link to="/dashboard/courses">Courses</Link>
             </Menu.Item>
