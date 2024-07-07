@@ -5,6 +5,21 @@
   background-position: center;
   height: 100vh;
 }
+.login-page .home {
+  text-decoration: none;
+  color: #fff;
+  position: absolute;
+  left: 2%;
+  top: 1%;
+  background-color: #fff;
+  border-radius: 100%;
+  padding: 5px;
+}
+.login-page .home:hover {
+  background-color: #eb824a;
+  transition: 0.5s;
+}
+
 .login-box {
   width: 100%;
   display: flex;

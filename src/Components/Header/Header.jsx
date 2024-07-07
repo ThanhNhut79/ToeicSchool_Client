@@ -8,14 +8,20 @@ import { AuthContext } from "../../Context/AuthContext";
 
 function Header() {
   const { cartItems } = useContext(CartContext);
-  const { loggedInUser } = useContext(AuthContext);
+  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate.push("/");
+    setLoggedInUser(null);
+    localStorage.removeItem("loggedInUser");
+    setTimeout(() => {
+      navigate("/");
+    });
   };
 
+  const goToUserDetail = (id) => {
+    navigate(`/user-profile/${id}`);
+  };
   return (
     <div className="header">
       <nav className="navbar">
@@ -56,12 +62,20 @@ function Header() {
           </ul>
         </div>
         <div className="auth-buttons">
-          {loggedInUser ? (
+          {loggedInUser && loggedInUser.MaNguoiDung ? (
             <>
-              <div className="auth-button-login" to="/userprofile">
+              <div
+                className="auth-button-login"
+                onClick={() => goToUserDetail(loggedInUser.MaNguoiDung)}
+              >
                 <span>Xin chào, {loggedInUser.HoTen}</span>
               </div>
-              <Link className="auth-button-login" onClick={handleLogout}>
+              <Link
+                className="auth-button-login"
+                onClick={() => {
+                  handleLogout();
+                }}
+              >
                 <span>Đăng xuất</span>
               </Link>
             </>

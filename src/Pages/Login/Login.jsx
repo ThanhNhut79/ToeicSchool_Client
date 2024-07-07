@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import { AuthContext } from "../../Context/AuthContext";
+import { HomeOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,6 @@ const Login = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const { setLoggedInUser } = useContext(AuthContext);
-
   const handleLogin = async () => {
     try {
       let endpoint = isAdmin
@@ -52,6 +52,14 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      <a className="home" href="/">
+        <HomeOutlined
+          style={{
+            fontSize: "30px",
+            color: "black",
+          }}
+        />
+      </a>
       <div className="login-box">
         <div className="wrapper">
           <div className="form-box login">

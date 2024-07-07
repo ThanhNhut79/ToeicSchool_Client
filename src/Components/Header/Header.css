@@ -52,6 +52,7 @@
   background-color: white; /* Màu xám nhạt */
 }
 .auth-button-login {
+  cursor: pointer;
   color: #fff;
 }
 

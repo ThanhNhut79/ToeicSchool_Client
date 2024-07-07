@@ -11,6 +11,7 @@ import Cart from "./Pages/Cart/Cart";
 import { CartProvider } from "./Context/CartContext";
 import Login from "./Pages/Login/Login";
 import { AuthProvider } from "./Context/AuthContext";
+import Userprofile from "./Pages/Userprofile/Userprofile";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-
+              <Route path="/user-profile/:userId" element={<Userprofile />} />
               <Route path="/introduce" element={<Introduce />} />
               <Route path="/course" element={<Course />} />
               <Route path="/cart" element={<Cart />} />
