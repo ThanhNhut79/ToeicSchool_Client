@@ -24,7 +24,10 @@ export const updateCourse = async (courseId, updatedCourse) => {
 
 export const createCourse = async (newCourse) => {
   try {
-    const response = await axios.post(API_URL, newCourse);
+    const response = await axios.post(
+      `http://localhost:5000/khoahoc/create`,
+      newCourse
+    );
     return response.data.data;
   } catch (error) {
     console.error("Failed to create course:", error);

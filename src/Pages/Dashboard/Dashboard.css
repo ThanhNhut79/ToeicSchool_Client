@@ -1,0 +1,73 @@
+/* Dashboard.css */
+
+/* Styles for Header */
+.header3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  background-color: #001529;
+  color: white;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+}
+
+.logo3 {
+  padding-left: 100px;
+  font-size: 30px;
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  width: 23%;
+}
+
+.admin-info span {
+  margin-right: 10px; /* Adjust spacing between Welcome and Admin */
+}
+
+.admin-info .ant-btn-primary {
+  margin-left: 10px; /* Adjust spacing between Welcome, Admin and Logout button */
+  width: 30%;
+}
+/* Styles for Sider (Sidebar) */
+.ant-layout-sider {
+  margin-top: 68px;
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}
+
+/* Điều chỉnh nội dung của trang */
+/* Styles for Content */
+.ant-layout-content {
+  margin: 24px 16px 0;
+  overflow: initial;
+}
+
+/* Styles for Menu */
+.ant-menu-inline {
+  height: 100%;
+  border-right: 0;
+}
+
+.ant-menu-inline .ant-menu-item {
+  height: 50px;
+  line-height: 50px;
+}
+
+.ant-menu-inline .ant-menu-item-selected {
+  background-color: #f0f2f5 !important;
+}
+
+/* Styles for Routes (Content Area) */
+.ant-layout-content {
+  padding: 24px;
+  margin: 24px 0 0; /* Điều chỉnh khoảng cách từ header đến content */
+  min-height: calc(
+    100vh - 64px
+  ); /* Chiều cao tối thiểu của content (100% trừ chiều cao của header) */
+}

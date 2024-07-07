@@ -90,6 +90,7 @@ const CourseList = () => {
             Edit
           </Button>
           <Button
+            type="link"
             style={{ marginLeft: "8px" }}
             onClick={() => handleViewDetails(record)}
           >
@@ -102,6 +103,7 @@ const CourseList = () => {
 
   return (
     <>
+      <h2>Courses</h2>
       <Button type="primary" onClick={() => setCreatingCourse(true)}>
         Create New Course
       </Button>

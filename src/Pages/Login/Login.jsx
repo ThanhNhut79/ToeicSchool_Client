@@ -15,7 +15,7 @@ const Login = () => {
   const { setLoggedInUser } = useContext(AuthContext);
   const handleLogin = async () => {
     try {
-      let endpoint = isAdmin
+      const endpoint = isAdmin
         ? "http://localhost:5000/quanly/login"
         : "http://localhost:5000/users/login";
 
@@ -24,13 +24,13 @@ const Login = () => {
         MatKhau: password,
       });
 
-      if (response.data.success === true) {
-        setLoggedInUser(response.data.user);
+      if (response.data.success) {
+        setLoggedInUser(response.data.quanly); // Lưu thông tin người dùng vào context
         if (isAdmin) {
           const { role } = response.data;
           switch (role) {
             case "Admin":
-              navigate("/dashboard-courses");
+              navigate("/dashboard");
               break;
             case "GiangVien":
               navigate("/GiangVien-dashboard");
@@ -98,7 +98,7 @@ const Login = () => {
               Xác nhận
             </button>
             {error && (
-              <h3 className="text-red-500 text-sm ">
+              <h3 className="text-red-500 text-sm">
                 Tài khoản hoặc mật khẩu không đúng
               </h3>
             )}
