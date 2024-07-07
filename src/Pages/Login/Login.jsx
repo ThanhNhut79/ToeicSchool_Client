@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import "./Login.css";
-import { AuthContext } from "../../Context/AuthContext";
-import { HomeOutlined } from "@ant-design/icons";
+import { login } from "../../store/slice/auth";
+import API_CONFIG from "../../configs/api_config";
+import authService from "../../Services/auth";
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,36 +13,39 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
-  const { setLoggedInUser } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
-      const endpoint = isAdmin
-        ? "http://localhost:5000/quanly/login"
-        : "http://localhost:5000/users/login";
-
-      const response = await axios.post(endpoint, {
-        Email: email,
-        MatKhau: password,
-      });
-
-      if (response.data.success) {
-        if (isAdmin) {
-          setLoggedInUser(response.data.quanly); // Lưu thông tin người dùng vào context
-          const { role } = response.data;
-          switch (role) {
-            case "Admin":
-              navigate("/dashboard/courses");
-              break;
-            case "GiangVien":
-              navigate("/GiangVien-dashboard");
-              break;
-            default:
-              setError(true);
-              break;
+      let endpoint = isAdmin
+        ? API_CONFIG.RESOURCES.QUANLY
+        : API_CONFIG.RESOURCES.USER;
+        const { accessToken, refreshToken, userInfo , role, success} = await authService.login(endpoint,{
+          Email: email,
+          MatKhau: password
+        });
+      if (success == true) {
+        console.log(role);
+        if (accessToken && refreshToken) {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          dispatch(login({ accessToken, userInfo }));
+          if (isAdmin) {
+            switch (role) {
+              case "Admin":
+                navigate("/admin-dashboard");
+                break;
+              case "GiangVien":
+                navigate("/GiangVien-dashboard");
+                break;
+              default:
+                setError(true);
+                break;
+            }
+          } else {
+            navigate("/user-dashboard");
           }
         } else {
-          setLoggedInUser(response.data.user); // Lưu thông tin người dùng vào conttex
-          navigate("/");
+          alert("Đăng nhập không thành công");
         }
       } else {
         setError(true);
@@ -53,14 +57,6 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <a className="home" href="/">
-        <HomeOutlined
-          style={{
-            fontSize: "30px",
-            color: "black",
-          }}
-        />
-      </a>
       <div className="login-box">
         <div className="wrapper">
           <div className="form-box login">
@@ -99,7 +95,7 @@ const Login = () => {
               Xác nhận
             </button>
             {error && (
-              <h3 className="text-red-500 text-sm">
+              <h3 className="text-red-500 text-sm ">
                 Tài khoản hoặc mật khẩu không đúng
               </h3>
             )}
