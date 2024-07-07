@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { message } from "antd";
+
 import "./login.css";
+import { login } from "../../store/slice/auth";
+import API_CONFIG from "../../configs/api_config";
+import authService from "../../services/auth";
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,34 +14,39 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
       let endpoint = isAdmin
-        ? "http://localhost:5000/quanly/login"
-        : "http://localhost:5000/user/login";
-
-      const response = await axios.post(endpoint, {
-        Email: email,
-        MatKhau: password,
-      });
-
-      if (response.success === true) {
-        if (isAdmin) {
-          const { role } = response;
-          switch (role) {
-            case "Admin":
-              navigate("/admin-dashboard");
-              break;
-            case "GiangVien":
-              navigate("/GiangVien-dashboard");
-              break;
-            default:
-              setError(true);
-              break;
+        ? API_CONFIG.RESOURCES.QUANLY
+        : API_CONFIG.RESOURCES.USER;
+        const { accessToken, refreshToken, userInfo , role, success} = await authService.login(endpoint,{
+          Email: email,
+          MatKhau: password
+        });
+      if (success == true) {
+        console.log(role);
+        if (accessToken && refreshToken) {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          dispatch(login({ accessToken, userInfo }));
+          if (isAdmin) {
+            switch (role) {
+              case "Admin":
+                navigate("/admin-dashboard");
+                break;
+              case "GiangVien":
+                navigate("/GiangVien-dashboard");
+                break;
+              default:
+                setError(true);
+                break;
+            }
+          } else {
+            navigate("/user-dashboard");
           }
         } else {
-          navigate("/user-dashboard");
+          alert("Đăng nhập không thành công");
         }
       } else {
         setError(true);
