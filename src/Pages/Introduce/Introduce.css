@@ -1,0 +1,54 @@
+.introduce {
+  color: black;
+  .content-page strong {
+    font-weight: 700;
+    font-size: 14px;
+    color: #363636;
+    line-height: 1.7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .content-page p {
+    color: black;
+    font-weight: 400;
+    font-size: 22px;
+  }
+  .title-head a {
+    text-decoration: none;
+    color: orange;
+    line-height: 1.4;
+  }
+}
+.introduce-section {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 100px;
+}
+.introduce-left {
+  width: 45%;
+}
+.breadcrumb {
+  margin-top: 70px;
+  margin-left: 40px;
+}
+.page-title {
+  margin: 10px 50px;
+  color: orange;
+}
+.introduce-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #38476e;
+  margin-top: 30px;
+}
+.item h2 {
+  font-size: 60px;
+  color: white;
+}
+.item h4 {
+  font-size: 30px;
+  color: white;
+}
+.item {
+  margin: 30px;
+}
