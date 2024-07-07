@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Spin, Popconfirm, message, Modal } from "antd";
-
+import { Table, Button, Spin, message, Modal } from "antd";
 import { deleteCourse, getCourses } from "../../Services/khoaHocService";
 import CourseForm from "./CourseForm";
 import EditCourseForm from "./EditCourseForm";
@@ -10,8 +9,8 @@ const CourseList = () => {
   const [loading, setLoading] = useState(true);
   const [editingCourse, setEditingCourse] = useState(null);
   const [creatingCourse, setCreatingCourse] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -31,18 +30,16 @@ const CourseList = () => {
   const handleEditClick = (course) => {
     setEditingCourse(course);
   };
-  const handleViewDetails = (record) => {
-    setSelectedCourse(record);
-    setModalVisible(true);
+
+  const handleDeleteClick = (course) => {
+    setCourseToDelete(course);
+    setDeleteConfirmVisible(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-  const handleDeleteClick = async (courseId) => {
+  const handleDeleteCourse = async () => {
     setLoading(true);
     try {
-      await deleteCourse(courseId);
+      await deleteCourse(courseToDelete.MaKhoaHoc);
       const data = await getCourses();
       setCourses(data);
       message.success("Course deleted successfully");
@@ -51,7 +48,14 @@ const CourseList = () => {
       message.error("Failed to delete course");
     } finally {
       setLoading(false);
+      setDeleteConfirmVisible(false);
+      setCourseToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmVisible(false);
+    setCourseToDelete(null);
   };
 
   const handleCourseUpdated = async () => {
@@ -65,6 +69,7 @@ const CourseList = () => {
       setLoading(false);
     }
   };
+
   const handleCourseCreated = async () => {
     setLoading(true);
     try {
@@ -92,9 +97,9 @@ const CourseList = () => {
           <Button
             type="link"
             style={{ marginLeft: "8px" }}
-            onClick={() => handleViewDetails(record)}
+            onClick={() => handleDeleteClick(record)}
           >
-            View Details
+            Delete
           </Button>
         </div>
       ),
@@ -115,34 +120,6 @@ const CourseList = () => {
           pagination={{ pageSize: 10 }}
         />
       </Spin>
-      <Modal
-        title="Course Details"
-        visible={modalVisible}
-        onCancel={closeModal}
-        footer={null}
-      >
-        <p>
-          <strong>Mã Khóa Học:</strong> {selectedCourse?.MaKhoaHoc}
-        </p>
-        <p>
-          <strong>Tên Khóa Học:</strong> {selectedCourse?.TenKhoaHoc}
-        </p>
-
-        <p>
-          <strong>Thời lượng trên lớp:</strong>{" "}
-          {selectedCourse?.ThoiLuongTrenLop}
-        </p>
-        <p>
-          <strong>Tổng số buổi học:</strong> {selectedCourse?.TongSoBuoiHoc}
-        </p>
-        <p>
-          <strong>Sỉ số tối đa:</strong> {selectedCourse?.SiSoToiDa}
-        </p>
-        <p>
-          <strong>Giá thành:</strong> {selectedCourse?.GiaThanh}
-        </p>
-        {/* Thêm thông tin chi tiết khác ở đây */}
-      </Modal>
       {editingCourse && (
         <EditCourseForm
           visible={!!editingCourse}
@@ -158,6 +135,16 @@ const CourseList = () => {
           onCourseCreated={handleCourseCreated}
         />
       )}
+      <Modal
+        title="Delete Course"
+        visible={deleteConfirmVisible}
+        onOk={handleDeleteCourse}
+        onCancel={handleCancelDelete}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this course?</p>
+      </Modal>
     </>
   );
 };
