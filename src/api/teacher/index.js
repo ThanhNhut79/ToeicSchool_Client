@@ -65,6 +65,15 @@ const apiTeacher = {
             throw new Error('Failed to fetch attendance for class');
         }
     },
+    updateAttendance : async (classId, attendance) => {
+        try {
+            const response = await axiosInstance.put(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.DIEMDANH}/${classId}`, attendance);
+            return response.data.data;
+        } catch (error) {
+            console.error('Error updating attendance:', error);
+            throw new Error('Failed to update attendance');
+        }
+    }
 };
 
 export default apiTeacher;
