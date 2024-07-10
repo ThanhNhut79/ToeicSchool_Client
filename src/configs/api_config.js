@@ -3,6 +3,9 @@ const API_CONFIG = {
     RESOURCES: {
         USER: 'users',
         QUANLY: 'quanly',
+        TEACHER: 'giangviens',
+        HOCVIEN: 'hocvien',
+        DIEMDANH: 'diemdanh',
     }
 }
 
