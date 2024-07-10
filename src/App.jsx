@@ -13,6 +13,7 @@ import { AuthProvider } from "./Context/AuthContext";
 import Userprofile from "./Pages/Userprofile/Userprofile";
 import CourseDetail from "./Pages/CourseDetail/CourseDetail";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import Teacher from "./Pages/Teacher/Teacher";
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './store/slice/auth';
 import { useEffect } from "react";
@@ -56,6 +57,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/teacher-dashboard/*" element={<Teacher />} />
             </Route>
           </Routes>
         </CartProvider>

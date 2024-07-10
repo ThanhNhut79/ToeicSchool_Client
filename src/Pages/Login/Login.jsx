@@ -24,18 +24,17 @@ const Login = () => {
           MatKhau: password
         });
       if (success == true) {
-        console.log(role);
         if (accessToken && refreshToken) {
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
-          dispatch(login({ accessToken, userInfo }));
+          dispatch(login({ accessToken, userInfo , role}));
           if (isAdmin) {
             switch (role) {
               case "Admin":
-                navigate("/admin-dashboard");
+                navigate("/dashboard/*");
                 break;
               case "GiangVien":
-                navigate("/GiangVien-dashboard");
+                navigate("/teacher-dashboard/*");
                 break;
               default:
                 setError(true);
