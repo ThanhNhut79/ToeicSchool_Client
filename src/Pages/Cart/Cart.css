@@ -1,14 +1,25 @@
 /* Cart.css */
 .cart-container {
-  max-width: 800px;
-  margin: 100px auto;
+  width: 30%;
   padding: 20px;
+  margin-top: 30px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+.checkout-payment {
+  width: 70%;
+}
+.checkout-cart {
+  gap: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 100px;
+}
 .cart-container h2 {
   text-align: center;
   color: #333;

@@ -14,21 +14,31 @@ import Userprofile from "./Pages/Userprofile/Userprofile";
 import CourseDetail from "./Pages/CourseDetail/CourseDetail";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Teacher from "./Pages/Teacher/Teacher";
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from './store/slice/auth';
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "./store/slice/auth";
 import { useEffect } from "react";
 import authService from "./Services/auth";
+import PaymentForm from "./Pages/Payment/Payment";
 function App() {
   const dispatch = useDispatch();
-  const { isLogin } = useSelector((state => state.auth));
-
-
-  useEffect(() => { 
+  const { isLogin } = useSelector((state) => state.auth);
+  console.log(useSelector((state) => state));
+  useEffect(() => {
+    const checkUser = localStorage.getItem("loggedInUser");
+    if (checkUser) {
+      const { accessToken, userInfo, role } = JSON.parse(checkUser);
+      dispatch(login({ accessToken, userInfo, role }));
+    }
+  }, []);
+  useEffect(() => {
     const renewAccessToken = async () => {
       if (isLogin === false) {
         if (localStorage.getItem("refreshToken")) {
           try {
-            const { accessToken, userInfo } = await authService.renewAccessToken(localStorage.getItem("refreshToken"));
+            const { accessToken, userInfo } =
+              await authService.renewAccessToken(
+                localStorage.getItem("refreshToken")
+              );
             dispatch(login({ accessToken, userInfo }));
           } catch (error) {
             console.error("Error renewing access token:", error);
@@ -51,6 +61,7 @@ function App() {
               <Route path="/course" element={<Course />} />
               <Route path="/course/:MaKhoaHoc" element={<CourseDetail />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/payment" element={<PaymentForm />} />
             </Route>
 
             <Route>

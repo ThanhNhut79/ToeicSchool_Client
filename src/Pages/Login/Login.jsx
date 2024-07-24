@@ -5,7 +5,7 @@ import "./Login.css";
 import { login } from "../../store/slice/auth";
 import API_CONFIG from "../../configs/api_config";
 import authService from "../../Services/auth";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,15 +19,22 @@ const Login = () => {
       let endpoint = isAdmin
         ? API_CONFIG.RESOURCES.QUANLY
         : API_CONFIG.RESOURCES.USER;
-        const { accessToken, refreshToken, userInfo , role, success} = await authService.login(endpoint,{
+      const { accessToken, refreshToken, userInfo, role, success } =
+        await authService.login(endpoint, {
           Email: email,
-          MatKhau: password
+          MatKhau: password,
         });
       if (success == true) {
         if (accessToken && refreshToken) {
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-          dispatch(login({ accessToken, userInfo , role}));
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          const saveLocal = {
+            userInfo,
+            role,
+            accessToken,
+          };
+          localStorage.setItem("loggedInUser", JSON.stringify(saveLocal));
+          dispatch(login({ accessToken, userInfo, role }));
           if (isAdmin) {
             switch (role) {
               case "Admin":
@@ -41,7 +48,7 @@ const Login = () => {
                 break;
             }
           } else {
-            navigate("/user-dashboard");
+            navigate("/");
           }
         } else {
           alert("Đăng nhập không thành công");

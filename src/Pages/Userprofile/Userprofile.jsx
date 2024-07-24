@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./Userprofile.css";
 import axios from "axios";
 import { useParams } from "react-router";
+import apiUser from "../../api/user";
 
 const Userprofile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
+  const [dataKhoaHoc, setDataKhoaHoc] = useState([]);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/users/${userId}`
-        );
+        const response = await apiUser.fetchUserInfo(userId);
         setUser(response.data);
         setLoading(false);
       } catch (error) {
@@ -20,29 +21,50 @@ const Userprofile = () => {
         setLoading(false);
       }
     };
-    const fetchKhoaHocOfUser = async () => {
+    const fetchDanhSachKhoaHocDaDangKy = async () => {
+      setLoading(true); // Start loading
+
       try {
-        const response = await axios.get(
-          `http://localhost:5000/khoahoc/${userId}`
-        );
-        console.log(response);
-        setLoading(false);
+        const [khoahocdadangky, getAllKhoaHoc] = await Promise.all([
+          apiUser.fetchDanhSachKhoaHocDaDangKy(userId),
+          apiUser.fetchDanhSachKhoaHoc(),
+        ]);
+        if (khoahocdadangky && getAllKhoaHoc) {
+          const rs = khoahocdadangky
+            .map((a) => getAllKhoaHoc.find((b) => a.MaKhoaHoc === b.MaKhoaHoc))
+            .filter(Boolean); // Remove undefined results
+
+          console.log(rs);
+          setDataKhoaHoc(rs);
+        } else {
+          setDataKhoaHoc([]);
+        }
       } catch (error) {
-        console.error("Error fetching khoa hoc:", error);
-        setLoading(false);
+        console.error("Error fetching data khoa hoc:", error);
+        setDataKhoaHoc([]);
+      } finally {
+        setLoading(false); // End loading
       }
     };
+
     const isHaveUser = localStorage.getItem("loggedInUser");
     if (isHaveUser) {
       fetchUserInfo();
-      // fetchKhoaHocOfUser();
+      fetchDanhSachKhoaHocDaDangKy();
     }
   }, [userId]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  const renderKhoaHocDaDangKy = () => {
+    return dataKhoaHoc.map((item, index) => (
+      <div key={index}>
+        <img src={item.HinhAnh} alt={item.TenKhoaHoc} />
+        <p>{item.TenKhoaHoc}</p>
+      </div>
+    ));
+  };
   return (
     <div className="user-detail">
       <div className="detail-box">
@@ -58,7 +80,7 @@ const Userprofile = () => {
       <div className="detail-box">
         <div className="">
           <h2>Khóa học đã đăng ký</h2>
-          <p>.........</p>
+          <div>{renderKhoaHocDaDangKy()}</div>
         </div>
       </div>
     </div>

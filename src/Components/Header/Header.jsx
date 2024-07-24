@@ -5,15 +5,19 @@ import { Avatar, Badge, Dropdown } from "antd";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { CartContext } from "../../Context/CartContext";
 import { AuthContext } from "../../Context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/slice/auth";
 
 function Header() {
   const { cartItems } = useContext(CartContext);
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
   const handleLogout = () => {
-    setLoggedInUser(null);
     localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    dispatch(logout());
     setTimeout(() => {
       navigate("/");
     });

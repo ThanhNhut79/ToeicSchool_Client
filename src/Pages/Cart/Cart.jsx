@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, List, Typography } from "antd";
 import "./Cart.css";
 import { CartContext } from "../../Context/CartContext";
+import PaymentForm from "../Payment/Payment";
 
 const { Title } = Typography;
 
@@ -44,61 +45,66 @@ const Cart = () => {
   const handleCheckoutAll = () => {};
 
   return (
-    <div className="cart-container">
-      <Title level={2}>Giỏ hàng</Title>
-      {cartItems.length === 0 ? (
-        <p>Giỏ hàng của bạn đang trống.</p>
-      ) : (
-        <div>
-          <List
-            itemLayout="horizontal"
-            dataSource={cartItems}
-            renderItem={(item, index) => (
-              <List.Item
-                key={index}
-                actions={[
-                  <Button
-                    type="link"
-                    danger
-                    onClick={() => handleRemoveFromCart(index)}
-                  >
-                    Xóa
-                  </Button>,
-                ]}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
+    <div className="checkout-cart">
+      <div className="checkout-payment">
+        <PaymentForm />
+      </div>
+      <div className="cart-container">
+        <Title level={2}>Giỏ hàng</Title>
+        {cartItems.length === 0 ? (
+          <p>Giỏ hàng của bạn đang trống.</p>
+        ) : (
+          <div>
+            <List
+              itemLayout="horizontal"
+              dataSource={cartItems}
+              renderItem={(item, index) => (
+                <List.Item
+                  key={index}
+                  actions={[
+                    <Button
+                      type="link"
+                      danger
+                      onClick={() => handleRemoveFromCart(index)}
+                    >
+                      Xóa
+                    </Button>,
+                  ]}
                 >
-                  <Link to={`/course/${item.id}`}>{item.TenKhoaHoc}</Link>
-                  <div>{item.GiaThanh} $</div>
-                </div>
-              </List.Item>
-            )}
-          />
-          <div style={{ marginTop: "20px" }}>
-            <p>Tổng cộng: {totalPrice} $</p>
-            <div className="button-container">
-              <Button type="primary" onClick={handleClearCart}>
-                Xóa toàn bộ giỏ hàng
-              </Button>
-              <Button
-                type="primary"
-                style={{ marginLeft: "10px" }}
-                onClick={handleCheckoutAll}
-              >
-                Thanh toán
-              </Button>
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Link to={`/course/${item.id}`}>{item.TenKhoaHoc}</Link>
+                    <div>{item.GiaThanh} $</div>
+                  </div>
+                </List.Item>
+              )}
+            />
+            <div style={{ marginTop: "20px" }}>
+              <p>Tổng cộng: {totalPrice} $</p>
+              <div className="button-container">
+                <Button type="primary" onClick={handleClearCart}>
+                  Xóa toàn bộ giỏ hàng
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ marginLeft: "10px" }}
+                  onClick={handleCheckoutAll}
+                >
+                  Thanh toán
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <Link to="/course">
-        <Button style={{ marginTop: "20px" }}>Tiếp tục mua hàng</Button>
-      </Link>
+        )}
+        <Link to="/course">
+          <Button style={{ marginTop: "20px" }}>Tiếp tục mua hàng</Button>
+        </Link>
+      </div>
     </div>
   );
 };
