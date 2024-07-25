@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import apiTeacher from '../../api/teacher/index';
-import { Table, Button, Spin, Alert, Select } from 'antd';
+import { Table, Button, Spin, Alert, Select, Typography } from 'antd';
+import moment from 'moment';
 
 const { Option } = Select;
+const { Title, Text } = Typography;
 
 const MarkAttendance = () => {
   const { classId } = useParams();
@@ -12,23 +14,30 @@ const MarkAttendance = () => {
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [course, setCourse] = useState({});
+  const [trainingCenter, setTrainingCenter] = useState({});
 
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
-        const [studentsData, lecturesData, attendanceData] = await Promise.all([
+        const [studentsData, lecturesData, attendanceData, courseData, centerData] = await Promise.all([
           apiTeacher.fetchStudentsForClass(classId),
           apiTeacher.fetchLecturesForClass(classId),
           apiTeacher.fetchAttendanceForClass(classId),
+          apiTeacher.fetchCourseByClassId(classId),
+          apiTeacher.fetchTrainingCenterByClassId(classId),
         ]);
 
-        if (!attendanceData || !Array(attendanceData.data)) {
+        if (!Array.isArray(attendanceData)) {
           throw new Error('Attendance data is empty or invalid');
         }
 
         setStudents(studentsData);
         setLectures(lecturesData);
         setAttendance(attendanceData);
+        console.log(courseData); 
+        setCourse(courseData);
+        setTrainingCenter(centerData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -61,6 +70,23 @@ const MarkAttendance = () => {
     }
   };
 
+  const getOptionClass = (value) => {
+    switch (value) {
+      case 'Đúng giờ':
+        return 'option-green';
+      case 'Muộn':
+        return 'option-orange';
+      case 'Vắng có phép':
+        return 'option-blue';
+      case 'Vắng không phép':
+        return 'option-red';
+      case 'Chưa điểm danh':
+        return 'option-gray';
+      default:
+        return '';
+    }
+  };
+
   const columns = [
     {
       title: 'Student ID',
@@ -77,42 +103,61 @@ const MarkAttendance = () => {
       dataIndex: 'Email',
       key: 'Email',
     },
-    ...lectures.map((lecture) => ({
-      title: (
-      <div style={{color: '#888' }}>
-         <div>Lecture</div>
-        {new Date(lecture.NgayHoc).toLocaleDateString()}
-      </div>),
-      dataIndex: `attendance_${lecture.MaBuoiHoc}`,
-      key: `attendance_${lecture.MaBuoiHoc}`,
-      render: (_, record) => {
-        const att = Array(attendance) ? attendance.find(
-          (att) => att.MaHocVien === record.MaHocVien && att.MaBuoiHoc === lecture.MaBuoiHoc
-        ) : null;
-        return (
-          <Select
-            defaultValue={att ? att.TrangThai : 'Chưa điểm danh'}
-            onChange={(value) =>
-              handleAttendanceChange(record.MaHocVien, lecture.MaBuoiHoc, value)
-            }
-          >
-            <Option value="Đúng giờ">Đúng giờ</Option>
-            <Option value="Muộn">Muộn</Option>
-            <Option value="Vắng có phép">Vắng có phép</Option>
-            <Option value="Vắng không phép">Vắng không phép</Option>
-            <Option value="Chưa điểm danh">Chưa điểm danh</Option>
-          </Select>
-        );
-      },
-    })),
+    ...lectures.map((lecture) => {
+      const isFuture = moment(lecture.NgayHoc).isAfter(moment(), 'day');
+      return {
+        title: (
+          <div className={isFuture ? 'disabled-column' : ''}>
+            <div>Lecture Date:</div>
+            <div>{moment(lecture.NgayHoc).format('DD/MM/YYYY')}</div>
+          </div>
+        ),
+        dataIndex: `attendance_${lecture.MaBuoiHoc}`,
+        key: `attendance_${lecture.MaBuoiHoc}`,
+        render: (_, record) => {
+          const att = attendance.find(
+            (att) => att.MaHocVien === record.MaHocVien && att.MaBuoiHoc === lecture.MaBuoiHoc
+          );
+          const isPast = moment(lecture.NgayHoc).isBefore(moment(), 'day');
+          return (
+            <Select
+              value={att ? att.TrangThai : 'Chưa điểm danh'}
+              onChange={(value) =>
+                isPast ? handleAttendanceChange(record.MaHocVien, lecture.MaBuoiHoc, value) : null
+              }
+              disabled={!isPast}
+              className="select-width"
+            >
+              {isPast && (
+                <Option value="Chưa điểm danh" className={getOptionClass('Chưa điểm danh')}>
+                  Chưa điểm danh
+                </Option>
+              )}
+              <Option value="Đúng giờ" className={getOptionClass('Đúng giờ')}>
+                Đúng giờ
+              </Option>
+              <Option value="Muộn" className={getOptionClass('Muộn')}>
+                Muộn
+              </Option>
+              <Option value="Vắng có phép" className={getOptionClass('Vắng có phép')}>
+                Vắng có phép
+              </Option>
+              <Option value="Vắng không phép" className={getOptionClass('Vắng không phép')}>
+                Vắng không phép
+              </Option>
+            </Select>
+          );
+        },
+      };
+    }),
   ];
 
   const dataSource = students.map((student) => {
     const attendanceData = {};
     lectures.forEach((lecture) => {
-      const att = Array.isArray(attendance) ? attendance.find(
+      const att = attendance.find(
         (att) => att.MaHocVien === student.MaHocVien && att.MaBuoiHoc === lecture.MaBuoiHoc
-      ) : null;
+      );
       attendanceData[`attendance_${lecture.MaBuoiHoc}`] = att ? att.TrangThai : '';
     });
     return { ...student, ...attendanceData };
@@ -128,8 +173,16 @@ const MarkAttendance = () => {
 
   return (
     <div>
+      <Title level={3}>MaLopHoc: {classId}</Title>
+      <div style={{ marginBottom: 5}}>
+        <Text strong>Training Center: </Text>
+        <Text>{trainingCenter.TenKhoaHoc}</Text>
+        <Text> - </Text>
+        <Text strong>Facility name: </Text>
+        <Text>{course.TenCoSo}</Text>
+      </div>
       <Table dataSource={dataSource} columns={columns} rowKey="MaNguoiDung" />
-      <Button onClick={handleSaveAttendance} type="primary" style={{ marginTop: 16 }}>
+      <Button onClick={handleSaveAttendance} type="primary"  style={{ marginTop: 16, width: '150px' }}>
         Save Attendance
       </Button>
     </div>

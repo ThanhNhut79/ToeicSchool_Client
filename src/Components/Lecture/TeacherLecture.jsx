@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin, Alert, Button } from "antd";
+import { Table, Spin, Alert, Button, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import apiTeacher from "../../api/teacher/index";
+import './TeacherLecture.css';
+
+const { Title } = Typography;
 
 const TeacherLecture = ({ MaQuanLy }) => {
   const [lectures, setLectures] = useState([]);
@@ -32,10 +35,6 @@ const TeacherLecture = ({ MaQuanLy }) => {
       setLoading(false);
     }
   }, [MaQuanLy]);
-
-  const handleViewDetails = (record) => {
-    navigate(`/teacher-dashboard/lectures/class-details/${record.MaLopHoc}`);
-  };
 
   const handleMarkAttendance = (record) => {
     navigate(`/teacher-dashboard/lectures/mark-attendance/${record.MaLopHoc}`);
@@ -78,20 +77,15 @@ const TeacherLecture = ({ MaQuanLy }) => {
       title: "Weekly Class Schedule",
       dataIndex: "LichHocTrongTuan",
       key: "LichHocTrongTuan",
-      render: (text) => text || "Planning...", // Xử lý trường hợp LichHocTrongTuan có thể là null
+      render: (text) => text || "Planning...", // Handle case when LichHocTrongTuan might be null
     },
     {
       title: "Actions",
       key: "actions",
       render: (text, record) => (
-        <div>
-          <Button onClick={() => handleViewDetails(record)} type="primary" style={{ marginRight: 8 }}>
-            View Details
-          </Button>
-          <Button onClick={() => handleMarkAttendance(record)} type="primary">
-            Mark Attendance
-          </Button>
-        </div>
+        <Button onClick={() => handleMarkAttendance(record)} type="primary">
+          Mark Attendance
+        </Button>
       ),
     },
   ];
@@ -105,8 +99,17 @@ const TeacherLecture = ({ MaQuanLy }) => {
   }
 
   return (
-    <div>
-      <Table dataSource={lectures} columns={columns} rowKey="MaLopHoc" />
+    <div className="teacher-lecture-container">
+      <div className="teacher-lecture-info">
+        <Title level={4}>Class List</Title>
+        <p>Below is the list of classes you are teaching. You can mark attendance as needed.</p>
+      </div>
+      <Table 
+        dataSource={lectures} 
+        columns={columns} 
+        rowKey="MaLopHoc" 
+        className="teacher-lecture-table"
+      />
     </div>
   );
 };

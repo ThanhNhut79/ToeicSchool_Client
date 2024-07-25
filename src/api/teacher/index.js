@@ -47,7 +47,7 @@ const apiTeacher = {
             throw new Error('Failed to fetch students for class');
         }
     },
-    fetchLecturesForClass : async (classId) => {
+    fetchLecturesForClass: async (classId) => {
         try {
             const response = await axiosInstance.get(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.TEACHER}/lophoc/buoihoc/${classId}`);
             return response.data.data;
@@ -56,7 +56,7 @@ const apiTeacher = {
             throw new Error('Failed to fetch lectures for class');
         }
     },
-    fetchAttendanceForClass : async (classId) => {
+    fetchAttendanceForClass: async (classId) => {
         try {
             const response = await axiosInstance.get(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.DIEMDANH}/${classId}`);
             return response.data.data;
@@ -65,13 +65,32 @@ const apiTeacher = {
             throw new Error('Failed to fetch attendance for class');
         }
     },
-    updateAttendance : async (classId, attendance) => {
+    updateAttendance: async (classId, attendance) => {
         try {
             const response = await axiosInstance.put(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.DIEMDANH}/${classId}`, attendance);
             return response.data.data;
         } catch (error) {
             console.error('Error updating attendance:', error);
             throw new Error('Failed to update attendance');
+        }
+    },
+    // New APIs
+    fetchCourseByClassId: async (classId) => {
+        try {
+            const response = await axiosInstance.get(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.COURSE}/giangvien/${classId}`);
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching course data:', error);
+            throw new Error('Failed to fetch course data');
+        }
+    },
+    fetchTrainingCenterByClassId: async (classId) => {
+        try {
+            const response = await axiosInstance.get(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.TRAINING_CENTER}/giangvien/${classId}`);
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching training center data:', error);
+            throw new Error('Failed to fetch training center data');
         }
     }
 };

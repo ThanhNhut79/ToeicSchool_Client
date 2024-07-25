@@ -34,7 +34,6 @@ axiosInstance.interceptors.response.use(function (response) {
             const refreshToken = localStorage.removeItem("refreshToken")
             if (refreshToken) {
                 const { accessToken, userInfo } = await authService.renewAccessToken(refreshToken);
-                console.log(accessToken);
                 store.dispatch(login({ accessToken, userInfo }))
             } else {
                 const { auth: { isLogin } } = store.getState()

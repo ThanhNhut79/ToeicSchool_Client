@@ -18,7 +18,7 @@ const { Header, Content, Sider } = Layout;
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
-  const { userInfo} = useSelector((state => state.auth));
+  const { userInfo } = useSelector((state) => state.auth);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
 
   const handleLogout = () => {
@@ -26,8 +26,9 @@ const TeacherDashboard = () => {
     localStorage.removeItem("loggedInUser");
     setTimeout(() => {
       navigate("/login");
-    });
+    }, 500); // Ensure logout state update
   };
+
   const items = [
     {
       key: "1",
@@ -37,12 +38,13 @@ const TeacherDashboard = () => {
       key: "2",
       danger: true,
       label: (
-        <span onClick={handleLogout} type="primary">
+        <span onClick={handleLogout}>
           Logout
         </span>
       ),
     },
   ];
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Header className="header3">
@@ -85,7 +87,7 @@ const TeacherDashboard = () => {
             >
               <Routes>
                 <Route path="courses" element={<TeacherCourseList />} />
-                <Route path="lectures" element={<TeacherLecture MaQuanLy={userInfo.MaQuanLy}/>} />
+                <Route path="lectures" element={<TeacherLecture MaQuanLy={userInfo?.MaQuanLy} />} />
                 <Route path="lectures/course-details/:courseId/:facilityId" element={<CourseDetails />} />
                 <Route path="lectures/mark-attendance/:classId" element={<MarkAttendance />} />
               </Routes>

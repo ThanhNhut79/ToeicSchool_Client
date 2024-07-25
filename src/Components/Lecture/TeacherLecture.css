@@ -1,0 +1,49 @@
+.table-wrapper {
+  margin-top: 50px !important;
+  overflow-x: auto; 
+  overflow-y: auto;
+}
+
+.table-wrapper .ant-table {
+  min-width: 1000px; 
+}
+
+.ant-table {
+  overflow: hidden; 
+}
+
+.ant-table-container {
+  overflow-x: auto;
+}
+.disabled-column {
+  color: #aaa; 
+  pointer-events: none; 
+}
+
+.select-width {
+  width: 150px; /* Điều chỉnh chiều rộng của Select nếu cần */
+}
+
+.option-chua-diem-danh {
+  color: gray;
+}
+
+.option-dung-gio {
+  color: green;
+}
+
+.option-muon {
+  color: orange;
+}
+
+.option-vang-co-phep {
+  color: blue;
+}
+
+.option-vang-khong-phep {
+  color: red;
+}
+
+.disabled-column {
+  color: #999;
+}

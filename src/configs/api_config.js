@@ -6,7 +6,9 @@ const API_CONFIG = {
         TEACHER: 'giangviens',
         HOCVIEN: 'hocvien',
         DIEMDANH: 'diemdanh',
+        COURSE: 'cosodaotao',
+        TRAINING_CENTER: 'khoahoc'
     }
 }
-
+    
 export default API_CONFIG
