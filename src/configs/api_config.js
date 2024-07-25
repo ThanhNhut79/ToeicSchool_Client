@@ -10,8 +10,6 @@ const API_CONFIG = {
     DANGKYKHOAHOC: "dangkyhoc",
     COURSE: "cosodaotao",
     TRAINING_CENTER: "khoahoc",
-    COURSE: 'cosodaotao',
-    TRAINING_CENTER: 'khoahoc'
   },
 };
 
