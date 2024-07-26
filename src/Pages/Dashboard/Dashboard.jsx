@@ -10,9 +10,9 @@ import {
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import User from "../../Components/User/User";
-import CourseList from "../../Components/Sidebar/CourseList";
 import Lecture from "../../Components/Lecture/Lecture";
 import { AuthContext } from "../../Context/AuthContext";
+import Course from "../../Components/CourseDashboard/Course";
 
 const { Header, Content, Sider } = Layout;
 
@@ -89,7 +89,7 @@ const Dashboard = () => {
               style={{ padding: 24, minHeight: 360 }}
             >
               <Routes>
-                <Route path="courses" element={<CourseList />} />
+                <Route path="courses" element={<Course />} />
                 <Route path="users" element={<User />} />
                 <Route path="lectures" element={<Lecture />} />
                 <Route path="school" element={<div>School Page</div>} />

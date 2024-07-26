@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Table, Button, Modal, Form, Input, message } from "antd";
+import apiUser from "../../api/user/index.js"; // assuming the path to apiUser
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -14,15 +14,13 @@ const User = () => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = () => {
-    axios
-      .get("http://localhost:5000/users")
-      .then((response) => {
-        setUsers(response.data.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the users!", error);
-      });
+  const fetchUsers = async () => {
+    try {
+      const response = await apiUser.getUserById();
+      setUsers(response);
+    } catch (error) {
+      console.error("There was an error fetching the users!", error);
+    }
   };
 
   const columns = [
@@ -47,63 +45,44 @@ const User = () => {
     },
   ];
 
-  const handleAddUser = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        axios
-          .post("http://localhost:5000/users/register", values)
-          .then(() => {
-            message.success("User added successfully");
-            setVisibleAddModal(false);
-            fetchUsers();
-          })
-          .catch((error) => {
-            console.error("Error adding user:", error);
-            message.error("Failed to add user");
-          });
-      })
-      .catch((errorInfo) => {
-        console.error("Validation failed:", errorInfo);
-      });
+  const handleAddUser = async () => {
+    try {
+      const values = await form.validateFields();
+      console.log("addusers", values);
+      await apiUser.createUser(values);
+      message.success("User added successfully");
+      setVisibleAddModal(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error adding user:", error);
+      message.error("Failed to add user");
+    }
   };
 
-  const handleEditUser = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        axios
-          .put(
-            `http://localhost:5000/users/update/${selectedUser.MaNguoiDung}`,
-            values
-          )
-          .then(() => {
-            message.success("User updated successfully");
-            setVisibleEditModal(false);
-            fetchUsers();
-          })
-          .catch((error) => {
-            console.error("Error updating user:", error);
-            message.error("Failed to update user");
-          });
-      })
-      .catch((errorInfo) => {
-        console.error("Validation failed:", errorInfo);
-      });
+  const handleEditUser = async () => {
+    try {
+      const values = await form.validateFields();
+      console.log(selectedUser.MaNguoiDung, values);
+      await apiUser.updateUser(selectedUser.MaNguoiDung, values);
+      message.success("User updated successfully");
+      setVisibleEditModal(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error updating user:", error);
+      message.error("Failed to update user");
+    }
   };
 
-  const handleDeleteUser = () => {
-    axios
-      .delete(`http://localhost:5000/users/delete/${selectedUser.MaNguoiDung}`)
-      .then(() => {
-        message.success("User deleted successfully");
-        setVisibleDeleteConfirm(false);
-        fetchUsers();
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-        message.error("Failed to delete user");
-      });
+  const handleDeleteUser = async () => {
+    try {
+      await apiUser.deleteUser(selectedUser.MaNguoiDung);
+      message.success("User deleted successfully");
+      setVisibleDeleteConfirm(false);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      message.error("Failed to delete user");
+    }
   };
 
   const handleCancel = () => {
