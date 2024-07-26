@@ -59,9 +59,10 @@ const Userprofile = () => {
   }
   const renderKhoaHocDaDangKy = () => {
     return dataKhoaHoc.map((item, index) => (
-      <div key={index}>
+      <div className="" key={index}>
         <img src={item.HinhAnh} alt={item.TenKhoaHoc} />
         <p>{item.TenKhoaHoc}</p>
+        <p>{item.ThoiLuongTrenLop}</p>
       </div>
     ));
   };
@@ -69,6 +70,7 @@ const Userprofile = () => {
     <div className="user-detail">
       <div className="detail-box">
         <h2>Thông tin học viên</h2>
+        <hr />
         <div className="content-detail">
           <p>Mã học viên: {user.MaNguoiDung}</p>
           <p>Họ tên: {user.HoTen}</p>
@@ -80,6 +82,7 @@ const Userprofile = () => {
       <div className="detail-box">
         <div className="">
           <h2>Khóa học đã đăng ký</h2>
+          <hr />
           <div>{renderKhoaHocDaDangKy()}</div>
         </div>
       </div>

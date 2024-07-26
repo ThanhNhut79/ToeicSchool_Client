@@ -3,15 +3,13 @@
   padding: 100px;
 }
 .detail-box {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border: 1px solid #ced4da;
   border-radius: 10px;
   padding: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .detail-box h2 {
-  background-color: #e7e7e9;
-  border-radius: 5px;
-  padding: 5px;
+  padding: 2px;
 }
 .content-detail {
 }
