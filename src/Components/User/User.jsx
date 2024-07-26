@@ -61,12 +61,24 @@ const User = () => {
 
   const handleEditUser = async () => {
     try {
-      const values = await form.validateFields();
-      console.log(selectedUser.MaNguoiDung, values);
-      await apiUser.updateUser(selectedUser.MaNguoiDung, values);
-      message.success("User updated successfully");
-      setVisibleEditModal(false);
-      fetchUsers();
+      const values = await form.getFieldsValue();
+      const updatedFields = {};
+
+      Object.keys(values).forEach((field) => {
+        if (values[field] !== selectedUser[field]) {
+          updatedFields[field] = values[field];
+        }
+      });
+  
+      if (Object.keys(updatedFields).length > 0) {
+        await apiUser.updateUser(selectedUser.MaNguoiDung, updatedFields);
+        message.success("User updated successfully");
+        setVisibleEditModal(false);
+        fetchUsers();
+      } else {
+        message.info("No changes made to the user.");
+        setVisibleEditModal(false);
+      }
     } catch (error) {
       console.error("Error updating user:", error);
       message.error("Failed to update user");

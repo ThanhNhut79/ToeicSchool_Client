@@ -12,6 +12,8 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@reduxjs/toolkit": "^2.2.6",
+    "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.1.0",
     "antd": "^5.18.0",
     "axios": "^1.7.2",
     "moment": "^2.30.1",
