@@ -22,12 +22,15 @@ const { Header, Content, Sider } = Layout;
 const Dashboard = () => {
   const navigate = useNavigate();
   const loggedInUser = useSelector((state) => state.auth.userInfo);
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     setLoggedInUser(null);
-    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    dispatch(logout());
     setTimeout(() => {
-      navigate("/login");
+      navigate("/");
     });
   };
   const items = [

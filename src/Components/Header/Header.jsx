@@ -14,7 +14,6 @@ function Header() {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.userInfo);
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     dispatch(logout());
