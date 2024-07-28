@@ -10,7 +10,7 @@ import "../Dashboard/Dashboard.css";
 import TeacherCourseList from "../../Components/Sidebar/TeacherCourseList";
 import TeacherLecture from "../../Components/Lecture/TeacherLecture";
 import { AuthContext } from "../../Context/AuthContext";
-import { useSelector } from 'react-redux'; 
+import { useDispatch, useSelector } from 'react-redux'; 
 import CourseDetails from "../CourseDetail/CourseDetail";
 import MarkAttendance from "../MarkAttendance/MarkAttendance";
 
@@ -19,9 +19,9 @@ const { Header, Content, Sider } = Layout;
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
 
-  const dispatch = 'useDispatch'();
+  const dispatch = useDispatch();
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
