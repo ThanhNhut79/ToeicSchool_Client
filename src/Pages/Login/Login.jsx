@@ -38,7 +38,7 @@ const Login = () => {
           if (isAdmin) {
             switch (role) {
               case "Admin":
-                navigate("/dashboard/*");
+                navigate("/dashboard/courses");
                 break;
               case "GiangVien":
                 navigate("/teacher-dashboard/*");

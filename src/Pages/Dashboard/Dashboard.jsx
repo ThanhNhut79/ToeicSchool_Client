@@ -14,7 +14,8 @@ import Lecture from "../../Components/Lecture/Lecture";
 import { AuthContext } from "../../Context/AuthContext";
 import Course from "../../Components/CourseDashboard/Course";
 import TrainingCenter from "../../Components/TrainingCenter/TrainingCenter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import DetailLecture from "../../Components/DetailLecture/DetailLecture";
 
 const { Header, Content, Sider } = Layout;
 
@@ -82,6 +83,9 @@ const Dashboard = () => {
             <Menu.Item key="4" icon={<EnvironmentOutlined />}>
               <Link to="/dashboard/training-center">Training Center</Link>
             </Menu.Item>
+            <Menu.Item key="5" icon={<VideoCameraOutlined />}>
+              <Link to="/dashboard/detail-lectures">Detail Lectures</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: 200 }}>
@@ -99,6 +103,14 @@ const Dashboard = () => {
                   element={
                     <div>
                       <TrainingCenter />
+                    </div>
+                  }
+                />
+                <Route
+                  path="detail-lectures"
+                  element={
+                    <div>
+                      <DetailLecture />
                     </div>
                   }
                 />

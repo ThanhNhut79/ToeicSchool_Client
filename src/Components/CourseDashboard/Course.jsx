@@ -52,16 +52,16 @@ const Course = () => {
   };
 
   const handleEditCourse = async () => {
-    // try {
-    //   const values = await form.validateFields();
-    //   await apiCourse.updateCourse(selectedCourse.MaKhoaHoc, values);
-    //   message.success("Course updated successfully");
-    //   setVisibleEditModal(false);
-    //   fetchCourses();
-    // } catch (error) {
-    //   console.error("Error updating course:", error);
-    //   message.error("Failed to update course");
-    // }
+    try {
+      const values = await form.validateFields();
+      await apiCourse.updateCourse(selectedCourse.MaKhoaHoc, values);
+      message.success("Course updated successfully");
+      setVisibleEditModal(false);
+      fetchCourses();
+    } catch (error) {
+      console.error("Error updating course:", error);
+      message.error("Failed to update course");
+    }
   };
 
   const handleDeleteCourse = async () => {

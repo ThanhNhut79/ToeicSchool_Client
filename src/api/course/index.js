@@ -31,7 +31,7 @@ const apiCourse = {
   updateCourse: async (MaKhoaHoc, courseData) => {
     try {
       const response = await axiosInstance.put(
-        `${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.KHOAHOC}/${MaKhoaHoc}`,
+        `${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.KHOAHOC}/update/${MaKhoaHoc}`,
         courseData
       );
       return response.data.data;
