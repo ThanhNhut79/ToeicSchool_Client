@@ -3,12 +3,15 @@ import "./Userprofile.css";
 import axios from "axios";
 import { useParams } from "react-router";
 import apiUser from "../../api/user";
+import { Pagination } from "antd";
 
 const Userprofile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
   const [dataKhoaHoc, setDataKhoaHoc] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -22,7 +25,7 @@ const Userprofile = () => {
       }
     };
     const fetchDanhSachKhoaHocDaDangKy = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
 
       try {
         const [khoahocdadangky, getAllKhoaHoc] = await Promise.all([
@@ -32,7 +35,7 @@ const Userprofile = () => {
         if (khoahocdadangky && getAllKhoaHoc) {
           const rs = khoahocdadangky
             .map((a) => getAllKhoaHoc.find((b) => a.MaKhoaHoc === b.MaKhoaHoc))
-            .filter(Boolean); // Remove undefined results
+            .filter(Boolean);
 
           console.log(rs);
           setDataKhoaHoc(rs);
@@ -57,9 +60,18 @@ const Userprofile = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = dataKhoaHoc.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
   const renderKhoaHocDaDangKy = () => {
-    return dataKhoaHoc.map((item, index) => (
-      <div className="" key={index}>
+    return paginatedData.map((item, index) => (
+      <div className="course-item" key={index}>
         <img src={item.HinhAnh} alt={item.TenKhoaHoc} />
         <p>{item.TenKhoaHoc}</p>
         <p>{item.ThoiLuongTrenLop}</p>
@@ -83,7 +95,13 @@ const Userprofile = () => {
         <div className="">
           <h2>Khóa học đã đăng ký</h2>
           <hr />
-          <div>{renderKhoaHocDaDangKy()}</div>
+          <div className="courses-list">{renderKhoaHocDaDangKy()}</div>
+          <Pagination
+            current={currentPage}
+            pageSize={itemsPerPage}
+            total={dataKhoaHoc.length}
+            onChange={handlePageChange}
+          />
         </div>
       </div>
     </div>
