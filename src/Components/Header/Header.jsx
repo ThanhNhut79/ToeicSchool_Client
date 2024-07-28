@@ -31,7 +31,7 @@ function Header() {
       key: "1",
       label: (
         <span onClick={() => goToUserDetail(loggedInUser.MaNguoiDung)}>
-          {loggedInUser && `${loggedInUser.HoTen}`}
+          {loggedInUser && `Hello, ${loggedInUser.HoTen}`}
         </span>
       ),
     },
@@ -40,7 +40,7 @@ function Header() {
       danger: true,
       label: (
         <span onClick={handleLogout} type="primary">
-          Logout
+          Log out
         </span>
       ),
     },
@@ -61,7 +61,7 @@ function Header() {
                 aria-current="page"
                 to="/introduce"
               >
-                Giới Thiệu
+                Introduction
               </Link>
             </li>
             <li>
@@ -70,7 +70,7 @@ function Header() {
                 aria-current="page"
                 to="/course"
               >
-                Khóa Học
+                Courses
               </Link>
             </li>
             <li>
@@ -79,7 +79,25 @@ function Header() {
                 aria-current="page"
                 to="/contact"
               >
-                Liên Hệ
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to="/registrations"
+              >
+                Registrations
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to="/classes"
+              >
+                Classes
               </Link>
             </li>
           </ul>
@@ -89,20 +107,6 @@ function Header() {
           <div className="auth-buttons">
             {loggedInUser && loggedInUser.MaNguoiDung ? (
               <>
-                {/* <div
-                className="auth-button-login"
-                onClick={() => goToUserDetail(loggedInUser.MaNguoiDung)}
-              >
-                <span>Xin chào, {loggedInUser.HoTen}</span>
-              </div>
-              <Link
-                className="auth-button-login"
-                onClick={() => {
-                  handleLogout();
-                }}
-              >
-                <span>Đăng xuất</span>
-              </Link> */}
                 <Dropdown menu={{ items }}>
                   <a onClick={(e) => e.preventDefault()}>
                     <Avatar
@@ -115,10 +119,10 @@ function Header() {
             ) : (
               <>
                 <Link className="auth-button" to="/register">
-                  <span>Đăng ký</span>
+                  <span>Register</span>
                 </Link>
                 <Link className="auth-button" to="/login">
-                  <span>Đăng nhập</span>
+                  <span>Login</span>
                 </Link>
               </>
             )}

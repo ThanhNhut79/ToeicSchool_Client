@@ -1,17 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Button, Card, Row, Col } from "antd";
+import { Button, Card, Row, Col, message, Select } from "antd";
+import { useSelector } from "react-redux";
 import "./CourseDetail.css";
-import { CartContext } from "../../Context/CartContext";
 
 const { Meta } = Card;
+const { Option } = Select;
 
 const CourseDetail = () => {
   const { MaKhoaHoc } = useParams();
-  console.log(`Course MaKhoaHoc from URL: ${MaKhoaHoc}`); // Debugging
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { userInfo } = useSelector((state) => state.auth);
   const [course, setCourse] = useState(null);
+  const [facilities, setFacilities] = useState([]);
+  const [selectedFacility, setSelectedFacility] = useState(null);
 
   useEffect(() => {
     if (MaKhoaHoc) {
@@ -21,16 +23,50 @@ const CourseDetail = () => {
           setCourse(response.data.data);
         })
         .catch((error) => {
-          console.error(
-            "There was an error fetching the course details!",
-            error
-          );
+          console.error("There was an error fetching the course details!", error);
         });
     }
   }, [MaKhoaHoc]);
 
-  const addToCart = () => {
-    setCartItems((prevCartItems) => [...prevCartItems, course]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/cosodaotao")
+      .then((response) => {
+        setFacilities(response.data.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the facilities!", error);
+      });
+  }, []);
+
+  const handleRegister = () => {
+    if (!selectedFacility) {
+      message.warning("Please select a facility!");
+      return;
+    }
+
+    const registrationData = {
+      MaKhoaHoc: parseInt(MaKhoaHoc, 10),
+      HoTen: userInfo.HoTen,
+      Email: userInfo.Email,
+      SoDienThoai: userInfo.SoDienThoai,
+      MaCoSo: selectedFacility,
+      MaNguoiDung: userInfo.MaNguoiDung,
+    };
+
+    axios
+      .post("http://localhost:5000/dangkyhoc/payment", registrationData)
+      .then((response) => {
+        if (response.status === 200) {
+          message.success("Registration successful!");
+        } else {
+          message.error("Registration failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Registration error:", error);
+        message.error("Registration failed. Please try again.");
+      });
   };
 
   if (!course) {
@@ -47,30 +83,40 @@ const CourseDetail = () => {
               description={
                 <>
                   <p>
-                    <strong>Mô tả:</strong> {course.MoTa}
+                    <strong>Description:</strong> {course.MoTa}
                   </p>
                   <p>
-                    <strong>Thời lượng trên lớp:</strong>{" "}
-                    {course.ThoiLuongTrenLop}
+                    <strong>Class Duration:</strong> {course.ThoiLuongTrenLop}
                   </p>
                   <p>
-                    <strong>Tổng số buổi học:</strong> {course.TongSoBuoiHoc}
+                    <strong>Total Sessions:</strong> {course.TongSoBuoiHoc}
                   </p>
                   <p>
-                    <strong>Sỉ số tối đa:</strong> {course.SiSoToiDa}
+                    <strong>Max Students:</strong> {course.SiSoToiDa}
                   </p>
                   <p>
-                    <strong>Giá thành:</strong> {course.GiaThanh} VNĐ
+                    <strong>Price:</strong> {course.GiaThanh} VNĐ
                   </p>
                 </>
               }
             />
+            <Select
+              placeholder="Select a facility"
+              style={{ width: "100%", marginTop: "20px" }}
+              onChange={(value) => setSelectedFacility(value)}
+            >
+              {facilities.map((facility) => (
+                <Option key={facility.MaCoSo} value={facility.MaCoSo}>
+                  {facility.TenCoSo}
+                </Option>
+              ))}
+            </Select>
             <Button
               type="primary"
-              onClick={addToCart}
+              onClick={handleRegister}
               style={{ marginTop: "20px" }}
             >
-              Thêm vào giỏ hàng
+              Register for Course
             </Button>
           </Card>
         </Col>

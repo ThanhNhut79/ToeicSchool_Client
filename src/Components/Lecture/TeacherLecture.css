@@ -47,3 +47,13 @@
 .disabled-column {
   color: #999;
 }
+
+.input-feedback,
+.input-score {
+  width: 150px; /* Chiều ngang 150px */
+  overflow: none !important;
+}
+
+.input-feedback {
+  height: auto;
+}

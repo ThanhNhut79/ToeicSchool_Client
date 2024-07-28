@@ -1,31 +1,41 @@
-.course-list-container {
+.registration-list-container {
     padding: 20px;
   }
   
-  .teacher-course-card {
+  .registration-list-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .course-list-container {
+    padding: 20px;
+  }
+  
+  .course-card {
     transition: transform 0.3s, box-shadow 0.3s;
   }
   
-  .teacher-course-card:hover {
+  .course-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
   
-  .teacher-course-card img {
+  .course-card img {
     height: 200px;
     object-fit: cover;
   }
   
-  .teacher-course-card-meta {
+  .course-card-meta {
     height: 100px;
     overflow: hidden;
     text-align: center;
   }
-  .teacher-course-card-meta .ant-card-meta-title {
+  .course-card-meta .ant-card-meta-title {
     color: #ff6600;
     font-size: 24px;
   }
-  .teacher-course-card-meta .ant-card-meta-description {
+  .course-card-meta .ant-card-meta-description {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -96,6 +106,4 @@
     background-color: #ff7f50;
     border-color: #ff7f50;
   }
-
-  
   

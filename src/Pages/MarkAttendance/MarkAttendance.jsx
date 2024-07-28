@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import apiTeacher from '../../api/teacher/index';
-import { Table, Button, Spin, Alert, Select, Typography } from 'antd';
+import { Table, Button, Spin, Alert, Select, Input, InputNumber, Typography } from 'antd';
 import moment from 'moment';
+import TextArea from 'antd/es/input/TextArea';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
 
 const MarkAttendance = () => {
   const { classId } = useParams();
+
   const [students, setStudents] = useState([]);
   const [lectures, setLectures] = useState([]);
   const [attendance, setAttendance] = useState([]);
@@ -35,7 +37,6 @@ const MarkAttendance = () => {
         setStudents(studentsData);
         setLectures(lecturesData);
         setAttendance(attendanceData);
-        console.log(courseData); 
         setCourse(courseData);
         setTrainingCenter(centerData);
       } catch (error) {
@@ -58,11 +59,28 @@ const MarkAttendance = () => {
     );
   };
 
+  const handleFeedbackChange = (studentId, value) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) =>
+        student.MaHocVien === studentId ? { ...student, NhanXet: value } : student
+      )
+    );
+  };
+
+  const handleScoreChange = (studentId, value) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) =>
+        student.MaHocVien === studentId ? { ...student, DiemSo: value } : student
+      )
+    );
+  };
+
   const handleSaveAttendance = async () => {
     setLoading(true);
     try {
       await apiTeacher.updateAttendance(classId, attendance);
-      alert('Attendance updated successfully!');
+      await apiTeacher.updateFeedbackAndScore(classId, students);
+      alert('Attendance and feedback updated successfully!');
     } catch (error) {
       setError(error.message);
     } finally {
@@ -102,6 +120,32 @@ const MarkAttendance = () => {
       title: 'Email',
       dataIndex: 'Email',
       key: 'Email',
+    },
+    {
+      title: 'Feedback',
+      dataIndex: 'NhanXet',
+      key: 'NhanXet',
+      render: (_, record) => (
+        <TextArea
+        className="input-feedback"
+          value={record.NhanXet}
+          onChange={(e) => handleFeedbackChange(record.MaHocVien, e.target.value)}
+        />
+      ),
+    },
+    {
+      title: 'Score',
+      dataIndex: 'DiemSo',
+      key: 'DiemSo',
+      render: (_, record) => (
+        <InputNumber
+        className="input-score"
+          value={record.DiemSo}
+          min={0}
+          max={100}
+          onChange={(value) => handleScoreChange(record.MaHocVien, value)}
+        />
+      ),
     },
     ...lectures.map((lecture) => {
       const isFuture = moment(lecture.NgayHoc).isAfter(moment(), 'day');
@@ -158,9 +202,14 @@ const MarkAttendance = () => {
       const att = attendance.find(
         (att) => att.MaHocVien === student.MaHocVien && att.MaBuoiHoc === lecture.MaBuoiHoc
       );
-      attendanceData[`attendance_${lecture.MaBuoiHoc}`] = att ? att.TrangThai : '';
+      attendanceData[`attendance_${lecture.MaBuoiHoc}`] = att ? att.TrangThai : 'Chưa điểm danh';
     });
-    return { ...student, ...attendanceData };
+    return { 
+      ...student, 
+      ...attendanceData, 
+      NhanXet: student.NhanXet || '', 
+      DiemSo: student.DiemSo || 0 
+    };
   });
 
   if (loading) {
@@ -174,7 +223,7 @@ const MarkAttendance = () => {
   return (
     <div>
       <Title level={3}>MaLopHoc: {classId}</Title>
-      <div style={{ marginBottom: 5}}>
+      <div style={{ marginBottom: 5 }}>
         <Text strong>Training Center: </Text>
         <Text>{trainingCenter.TenKhoaHoc}</Text>
         <Text> - </Text>
@@ -182,7 +231,7 @@ const MarkAttendance = () => {
         <Text>{course.TenCoSo}</Text>
       </div>
       <Table dataSource={dataSource} columns={columns} rowKey="MaNguoiDung" />
-      <Button onClick={handleSaveAttendance} type="primary"  style={{ marginTop: 16, width: '150px' }}>
+      <Button onClick={handleSaveAttendance} type="primary" style={{ marginTop: 16, width: '150px' }}>
         Save Attendance
       </Button>
     </div>

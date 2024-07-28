@@ -74,7 +74,6 @@ const apiTeacher = {
             throw new Error('Failed to update attendance');
         }
     },
-    // New APIs
     fetchCourseByClassId: async (classId) => {
         try {
             const response = await axiosInstance.get(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.COURSE}/giangvien/${classId}`);
@@ -91,6 +90,15 @@ const apiTeacher = {
         } catch (error) {
             console.error('Error fetching training center data:', error);
             throw new Error('Failed to fetch training center data');
+        }
+    },
+    updateFeedbackAndScore : async (classId,students) => {
+        try {
+            const response = await axiosInstance.put(`${API_CONFIG.BASE_URL}${API_CONFIG.RESOURCES.HOCVIEN}/feedbackandscore/${classId}`, students);
+            return response.data.data;
+        } catch (error) {
+            console.error('Error updating feedback and score:', error);
+            throw new Error('Failed to update feedback and score');
         }
     }
 };
