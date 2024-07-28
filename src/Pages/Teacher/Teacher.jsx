@@ -21,12 +21,14 @@ const TeacherDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
 
+  const dispatch = 'useDispatch'();
   const handleLogout = () => {
-    setLoggedInUser(null);
-    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    dispatch(logout());
     setTimeout(() => {
-      navigate("/login");
-    }, 500); // Ensure logout state update
+      navigate("/");
+    });
   };
 
   const items = [

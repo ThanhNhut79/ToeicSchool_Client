@@ -25,7 +25,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    setLoggedInUser(null);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     dispatch(logout());
