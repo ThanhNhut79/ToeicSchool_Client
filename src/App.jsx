@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import authService from "./Services/auth";
 import PaymentForm from "./Pages/Payment/Payment";
 import ClassList from "./Pages/Class/ClassList";
+import MidtermTest from "./Pages/MidtermTest/MidtermTest";
 import RegistrationList from "./Pages/RegistrationList/RegistrationList";
 import ContactPage from "./Pages/Contact/Contact";
 function App() {

@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, Radio, Button, message } from "antd";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./MidtermTest.css";
 
 const MidtermTest = () => {
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const MaNguoiDung = userInfo?.MaNguoiDung;
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [MaBaiKiemTra, setMaBaiKiemTra] = useState(null);
-  const history = useHistory(); // Initialize useHistory hook
 
   useEffect(() => {
     axios
@@ -38,7 +38,7 @@ const MidtermTest = () => {
       if (response.status === 200) {
         const { score, totalQuestions } = response.data.data;
         alert(`Test submitted successfully! Your score is ${score} out of ${totalQuestions}.`);
-        history.push("/lophoc");
+        navigate("/lophoc");
       } else {
         message.error("There was an error submitting the test.");
       }
