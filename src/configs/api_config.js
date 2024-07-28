@@ -10,7 +10,9 @@ const API_CONFIG = {
     DANGKYKHOAHOC: "dangkyhoc",
     COURSE: "cosodaotao",
     TRAINING_CENTER: "khoahoc",
+    BAIGIANG: "baigiang",
+    TRAININGCENTER: "cosodaotao",
   },
 };
 
-export default API_CONFIG
+export default API_CONFIG;

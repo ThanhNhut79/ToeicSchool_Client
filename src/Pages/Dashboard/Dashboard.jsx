@@ -13,12 +13,14 @@ import User from "../../Components/User/User";
 import Lecture from "../../Components/Lecture/Lecture";
 import { AuthContext } from "../../Context/AuthContext";
 import Course from "../../Components/CourseDashboard/Course";
+import TrainingCenter from "../../Components/TrainingCenter/TrainingCenter";
+import { useSelector } from "react-redux";
 
 const { Header, Content, Sider } = Layout;
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { loggedInUser, setLoggedInUser } = useContext(AuthContext);
+  const loggedInUser = useSelector((state) => state.auth.userInfo);
 
   const handleLogout = () => {
     setLoggedInUser(null);
@@ -78,7 +80,7 @@ const Dashboard = () => {
               <Link to="/dashboard/lectures">Lectures</Link>
             </Menu.Item>
             <Menu.Item key="4" icon={<EnvironmentOutlined />}>
-              <Link to="/dashboard/school">School</Link>
+              <Link to="/dashboard/training-center">Training Center</Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -92,7 +94,14 @@ const Dashboard = () => {
                 <Route path="courses" element={<Course />} />
                 <Route path="users" element={<User />} />
                 <Route path="lectures" element={<Lecture />} />
-                <Route path="school" element={<div>School Page</div>} />
+                <Route
+                  path="training-center"
+                  element={
+                    <div>
+                      <TrainingCenter />
+                    </div>
+                  }
+                />
               </Routes>
             </div>
           </Content>
