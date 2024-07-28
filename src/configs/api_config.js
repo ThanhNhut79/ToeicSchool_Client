@@ -12,6 +12,7 @@ const API_CONFIG = {
     TRAINING_CENTER: "khoahoc",
     BAIGIANG: "baigiang",
     TRAININGCENTER: "cosodaotao",
+    DETAIL_LECTURE: "chitietbaigiang",
   },
 };
 
