@@ -21,6 +21,7 @@
   import PaymentForm from "./Pages/Payment/Payment";
 import ClassList from "./Pages/Class/ClassList";
 import RegistrationList from "./Pages/RegistrationList/RegistrationList";
+import MidtermTest from "./Pages/MidtermTest/MidtermTest";
   function App() {
     const dispatch = useDispatch();
     const { isLogin } = useSelector((state) => state.auth);
@@ -64,6 +65,7 @@ import RegistrationList from "./Pages/RegistrationList/RegistrationList";
               <Route path="/cart" element={<Cart />} />
               <Route path="/payment" element={<PaymentForm />} />
               <Route path="/classes" element={<ClassList />} />
+              <Route path="/midterm-test/:classId" element={<MidtermTest />} />
               <Route path="/registrations" element={<RegistrationList />} />
             </Route>
 

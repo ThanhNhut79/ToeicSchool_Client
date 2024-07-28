@@ -14,14 +14,27 @@ const RegistrationList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/dangkyhoc/${MaNguoiDung}`)
-      .then((response) => {
-        setRegistrations(response.data.data);
-      })
-      .catch((error) => {
+    const fetchRegistrations = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/dangkyhoc/${MaNguoiDung}`);
+        const registrationsData = response.data.data;
+
+        const courseDetailsPromises = registrationsData.map(async (registration) => {
+          const courseResponse = await axios.get(`http://localhost:5000/khoahoc/${registration.MaKhoaHoc}`);
+          return {
+            ...registration,
+            TenKhoaHoc: courseResponse.data.data.TenKhoaHoc,
+          };
+        });
+
+        const registrationsWithCourseDetails = await Promise.all(courseDetailsPromises);
+        setRegistrations(registrationsWithCourseDetails);
+      } catch (error) {
         console.error("There was an error fetching the registrations!", error);
-      });
+      }
+    };
+
+    fetchRegistrations();
   }, [MaNguoiDung]);
 
   const handlePayment = (registration) => {
@@ -30,7 +43,7 @@ const RegistrationList = () => {
 
   return (
     <div className="registration-list-container">
-        <div className="course-list-title-container">
+      <div className="course-list-title-container">
         <h2 className="course-list-title">Registration List</h2>
       </div>
       
@@ -39,7 +52,7 @@ const RegistrationList = () => {
           <Col key={registration.MaDangKy} span={8}>
             <Card hoverable>
               <Meta
-                title={`Course ID: ${registration.MaKhoaHoc}`}
+                title={`Course: ${registration.TenKhoaHoc}`}
                 description={
                   <>
                     <p><strong>Name:</strong> {registration.HoTen}</p>

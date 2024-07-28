@@ -11,6 +11,8 @@ const PaymentForm = () => {
   const navigate = useNavigate();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isVerificationVisible, setIsVerificationVisible] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("visa");
   const [bank, setBank] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
@@ -31,28 +33,18 @@ const PaymentForm = () => {
     fetchCoursePrice();
   }, [registration.MaKhoaHoc]);
 
-  const handlePayment = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/payment", { clientSecret: registration.clientSecret });
-      if (response.status === 200) {
-        message.success("Payment successful!");
-        navigate("/");
-      } else {
-        message.error("Payment failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Payment error:", error);
-      message.error("Payment failed. Please try again.");
-    }
-  };
-
-  const showModal = () => {
+  const handlePayment = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = async () => {
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setIsVerificationVisible(true);
+  };
+
+  const handleVerification = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/webhook/", {
+      const response = await axios.post("http://localhost:5000/webhook/", {
         registrationId: registration.MaDangKy,
         bank,
         cardNumber,
@@ -62,8 +54,8 @@ const PaymentForm = () => {
       });
       if (response.status === 200) {
         message.success("Payment successful!");
-        setIsModalVisible(false);
-        navigate("/");
+        setIsVerificationVisible(false);
+        navigate("/registrations");
       } else {
         message.error("Payment failed. Please try again.");
       }
@@ -73,8 +65,22 @@ const PaymentForm = () => {
     }
   };
 
+  const resendCode = async () => {
+    try {
+      // Placeholder for resend code logic
+      message.success("Verification code resent successfully!");
+    } catch (error) {
+      console.error("Error resending verification code:", error);
+      message.error("Failed to resend verification code. Please try again.");
+    }
+  };
+
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handleVerificationCancel = () => {
+    setIsVerificationVisible(false);
   };
 
   return (
@@ -100,7 +106,7 @@ const PaymentForm = () => {
             <Input value={`${coursePrice} VNĐ`} disabled />
           </Form.Item>
           <Form.Item label="Payment Method">
-            <Select defaultValue="visa" onChange={showModal}>
+            <Select defaultValue="visa" onChange={setPaymentMethod}>
               <Option value="visa">Visa</Option>
               <Option value="mastercard">Mastercard</Option>
             </Select>
@@ -114,9 +120,11 @@ const PaymentForm = () => {
         <Form layout="vertical">
           <Form.Item label="Bank">
             <Select onChange={(value) => setBank(value)}>
-              <Option value="bank1">Bank 1</Option>
-              <Option value="bank2">Bank 2</Option>
-              <Option value="bank3">Bank 3</Option>
+              <Option value="bank1">Viettinbank</Option>
+              <Option value="bank2">Agribank</Option>
+              <Option value="bank3">NamABank</Option>
+              <Option value="bank4">VPBank</Option>
+              <Option value="bank5">Vietcombank</Option>
             </Select>
           </Form.Item>
           <Form.Item label="Card Number">
@@ -128,6 +136,23 @@ const PaymentForm = () => {
           <Form.Item label="Expiry Date">
             <Input value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} placeholder="MM/YY" />
           </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title="Enter Verification Code"
+        visible={isVerificationVisible}
+        onOk={handleVerification}
+        onCancel={handleVerificationCancel}
+        footer={[
+          <Button key="resend" onClick={resendCode}>
+            Resend Code
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleVerification}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form layout="vertical">
           <Form.Item label="Verification Code">
             <Input value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
           </Form.Item>

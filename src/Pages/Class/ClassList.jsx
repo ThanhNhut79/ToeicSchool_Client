@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Row, Col, Card } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Row, Col, Card, Button } from "antd";
 import { useSelector } from "react-redux";
-import "./ClassList.css"; // Make sure this CSS file exists
+import "./ClassList.css"; 
 
 const { Meta } = Card;
 
@@ -10,6 +11,7 @@ const ClassList = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const MaNguoiDung = userInfo?.MaNguoiDung;
   const [classes, setClasses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -22,9 +24,13 @@ const ClassList = () => {
       });
   }, [MaNguoiDung]);
 
+  const handleTest = (classId) => {
+    navigate(`/midterm-test/${classId}`);
+  };
+
   return (
-      <div className="registration-list-container">
-        <div className="course-list-title-container">
+    <div className="registration-list-container">
+      <div className="course-list-title-container">
         <h2 className="course-list-title">Class List</h2>
       </div>
       <Row gutter={[16, 16]}>
@@ -40,6 +46,13 @@ const ClassList = () => {
                     <p><strong>Total Sessions:</strong> {classItem.TongSoBuoiHoc}</p>
                     <p><strong>In-class Duration:</strong> {classItem.ThoiLuongHocTrenLop}</p>
                     <p><strong>Current Student Count:</strong> {classItem.SoLuongHocVienHienTai}</p>
+                    <Button 
+                      type="primary" 
+                      onClick={() => handleTest(classItem.MaLopHoc)}
+                      style={{ marginTop: "10px" }}
+                    >
+                      Midterm Test
+                    </Button>
                   </>
                 }
               />

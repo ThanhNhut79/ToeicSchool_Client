@@ -127,15 +127,6 @@ function Header() {
               </>
             )}
           </div>
-          <div className="cart-icon">
-            <Link to="/cart">
-              <Badge count={cartItems.length}>
-                <ShoppingCartOutlined
-                  style={{ fontSize: "24px", color: "#fff" }}
-                />
-              </Badge>
-            </Link>
-          </div>
         </div>
       </nav>
     </div>
